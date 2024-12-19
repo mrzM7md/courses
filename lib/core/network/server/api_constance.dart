@@ -8,7 +8,8 @@ class ApiConstance {
   static const String _httpServerLink = "https://localhost:7272/api";
 
   // start endpoints
-  static String httpLinkGetAllCategories({required int pageNumber, required int pageSize, required String? keywordSearch}) => '$_httpServerLink/categories/GetAllCategoriesAsync?PageNumber=$pageNumber&PageSize=$pageSize';
+  static String httpLinkGetAllCategories({required int pageNumber, required int pageSize, required String keywordSearch}) => '$_httpServerLink/categories/GetAllCategoriesAsync?PageNumber=$pageNumber&PageSize=$pageSize${
+      keywordSearch.trim().isEmpty ? '' : '&Search=$keywordSearch'}';
 
   static Future<http.Response> getData({required String url ,required String accessToken}) async {
     var response = await http.get(

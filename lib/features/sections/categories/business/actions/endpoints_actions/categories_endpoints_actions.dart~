@@ -18,7 +18,7 @@ class CategoriesEndpointsActions implements BaseCategoriesEndpointsActions {
     try{
       Response response = await ApiConstance.getData(
           url: ApiConstance.httpLinkGetAllCategories(pageNumber: pageNumber, pageSize: pageSize, keywordSearch: keywordSearch), accessToken: "");
-
+      
         dynamic jsonData = jsonDecode(response.body);
         if(response.statusCode >= 200 && response.statusCode < 300) {
           List<CategoryModel> categories = List.from( (jsonData['data']['data'] as List).map((e) => CategoryModel.fromJson(json: e)) );

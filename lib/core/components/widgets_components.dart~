@@ -24,9 +24,7 @@ List<Widget> appButtonAndSearchTextBoxWidgets({required BuildContext context, re
           labelText: "البحث عن صنف",
           hintText: "مثال 'الرياضيات'",
           suffixIcon: IconButton(
-              onPressed:(){
-                onSearchTap(searchController.text);
-              }, icon: const Icon(CupertinoIcons.search))),
+              onPressed:() => onSearchTap, icon: const Icon(CupertinoIcons.search))),
     ),
   ),
 ];

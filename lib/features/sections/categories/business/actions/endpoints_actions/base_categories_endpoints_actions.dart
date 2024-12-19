@@ -7,6 +7,6 @@ import '../../../data/models/category_model.dart';
 
 abstract class BaseCategoriesEndpointsActions {
   Future<Either<ErrorModel, SuccessModel<CategoryModel>>> addEditCategoryAsync({required CategoryModel category});
-  Future<Either<ErrorModel, SuccessModel<PaginationModel<CategoryModel>>>> getCategoriesAsync({String? keywordSearch, int pageNumber = pageNumber, int pageSize = pageSize});
+  Future<Either<ErrorModel, SuccessModel<PaginationModel<CategoryModel>>>> getCategoriesAsync({required String keywordSearch, int pageNumber = pageNumber, int pageSize = pageSize});
   Future<Either<ErrorModel, SuccessModel<String?>>> deleteCategoryAsync({required String categoryId});
 }

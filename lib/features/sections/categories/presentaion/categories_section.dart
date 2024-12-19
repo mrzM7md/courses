@@ -19,10 +19,13 @@ class CategoriesSection extends StatefulWidget {
 
 class _CategoriesSectionState extends State<CategoriesSection> {
   late CategoriesCubit categoryCubit;
+  late TextEditingController searchController;
   @override
   void initState() {
     super.initState();
+
     categoryCubit = CategoriesCubit.get(context)..getCategories(keywordSearch: "");
+    searchController = TextEditingController();
   }
 
   @override
@@ -32,8 +35,7 @@ class _CategoriesSectionState extends State<CategoriesSection> {
           color: Color(appColorLightYellow),
           padding: EdgeInsetsDirectional.symmetric(
               vertical: smallVerticalPadding(context: context),
-              horizontal:
-              smallHorizontalPadding(context: context)),
+              horizontal: smallHorizontalPadding(context: context)),
           child: Container(
             decoration: BoxDecoration(
               color: Colors.white,
@@ -49,13 +51,21 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                     isTabletSize(context: context))
                     ? Row(
                   children:
-                  appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة صنف جديد", onTap: (){}, labelText: "بحث عن ضنف", hintText: "إضافة صنف جديد", onSubmit: (){}),
+                  appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة صنف جديد", searchController: searchController, labelText: "بحث عن ضنف", hintText: "إضافة صنف جديد", onSearchTap: (v){
+                    categoryCubit.getCategories(keywordSearch: searchController.text);
+                  }, onAddTap: (){
+
+                  }),
                 )
                     : Column(
                   crossAxisAlignment:
                   CrossAxisAlignment.center,
                   children:
-                  appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة صنف جديد", onTap: (){}, labelText: "بحث عن ضنف", hintText: "إضافة صنف جديد", onSubmit: (){}),
+                  appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة صنف جديد", searchController: searchController, labelText: "بحث عن ضنف", hintText: "إضافة صنف جديد", onSearchTap: (v){
+                    categoryCubit.getCategories(keywordSearch: searchController.text);
+                  }, onAddTap: (){
+
+                  }),
                 ),
                 SizedBox(
                   height:
@@ -149,9 +159,9 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                           icon: const Icon(Icons.arrow_back),
                           onPressed: () {},
                         ),
-                        Text('Page 1 / 22'),
+                        const Text('Page 1 / 22'),
                         IconButton(
-                          icon: Icon(Icons.arrow_forward),
+                          icon: const Icon(Icons.arrow_forward),
                           onPressed: () {},
                         ),
                       ],
