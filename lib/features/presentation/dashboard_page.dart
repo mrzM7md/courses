@@ -2,9 +2,12 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:course_dashboard/core/components/widgets_components.dart';
 import 'package:course_dashboard/core/values/responsive_sizes.dart';
 import 'package:course_dashboard/core/values/screen_responsive_sizes.dart';
+import 'package:course_dashboard/features/sections/categories/business/cubit_controller/categories_cubit.dart';
 import 'package:course_dashboard/features/sections/categories/presentaion/categories_section.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/services/setup_service_locator.dart';
+import '../sections/categories/business/actions/endpoints_actions/categories_endpoints_actions.dart';
 import 'navigation_widgets/navigation_items_widget.dart';
 
 class DashboardPage extends StatefulWidget {
@@ -82,19 +85,25 @@ class _DashboardPageState extends State<DashboardPage> {
                 ConditionalBuilder(
                   condition: isMobileSize(context: context),
                   builder: (context) => Container(),
-                  fallback: (context) => SizedBox(
-                      width: navigationWidth(context: context),
-                      child: const NavigationItemsWidget()),
+                  fallback: (context) =>
+                      SizedBox(
+                          width: navigationWidth(context: context),
+                          child: const NavigationItemsWidget()),
                 ),
                 Expanded(
                     child: Column(
-                  children: [
-                    appSuccessFailWidget(context: context, isSuccess: false, message: "حدث خطأ ما"),
-                    const Expanded(
-                      child: CategoriesSection(),
-                    ),
-                  ],
-                ))
+                      children: [
+                        appSuccessFailWidget(context: context,
+                            isSuccess: false,
+                            message: "حدث خطأ ما"),
+                        Expanded(
+                          child: BlocProvider(
+                            create: (context) => CategoriesCubit(baseCategoriesEndpointsActions: sl<CategoriesEndpointsActions>()),
+                            child: const CategoriesSection(),
+                          ),
+                        ),
+                      ],
+                    ))
               ],
             )),
       ),

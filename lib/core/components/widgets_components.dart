@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../values/images.dart';
 import '../values/responsive_sizes.dart';
 import '../values/screen_responsive_sizes.dart';
 
@@ -67,3 +68,17 @@ DataCell appDataCellWidget({required BuildContext context, required String title
             style: TextStyle(
                 fontSize: smallFontSize(context: context),
                 fontWeight: FontWeight.bold))));
+
+Widget appNoDataWidget() => Column(
+      children: [
+        Image.asset(
+          noDataImage,
+          height: 100,
+          width: 100,
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        const Text("لا توجد بيانات")
+      ],
+    );

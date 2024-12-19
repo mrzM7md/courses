@@ -1,0 +1,6 @@
+class ErrorModel<T> {
+  final String message;
+  final int statusCode;
+
+  const ErrorModel({required this.success, required this.message, required this.statusCode});
+}
