@@ -60,7 +60,6 @@ class CategoriesEndpointsActions implements BaseCategoriesEndpointsActions {
     } on FormatException catch (_) {
       return const Left(ErrorModel(message: "الرابط غير صحيح", statusCode: -1));
     } catch (ex) {
-      print("Ex:::: $ex");
       return const Left(
           ErrorModel(message: "الخادم غير متوفر حاليًا", statusCode: -1));
     }
@@ -86,7 +85,6 @@ class CategoriesEndpointsActions implements BaseCategoriesEndpointsActions {
     } on FormatException catch (_) {
     return const Left(ErrorModel(message: "الرابط غير صحيح", statusCode: -1));
     } catch (ex) {
-    print("Ex:::: $ex");
     return const Left(
     ErrorModel(message: "الخادم غير متوفر حاليًا", statusCode: -1));
     }
