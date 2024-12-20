@@ -1,6 +1,8 @@
+import 'package:course_dashboard/features/business/app_cubit.dart';
 import 'package:course_dashboard/features/presentation/dashboard_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 part 'router.g.dart';
@@ -10,7 +12,8 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 // router: This is an instance of GoRouter that is used to manage navigation between different screens.
 final router = GoRouter(
-  routes: $appRoutes,  // $appRoutes: This is a list of routes that are defined using the go_router package.
+  routes: $appRoutes,
+  // $appRoutes: This is a list of routes that are defined using the go_router package.
   debugLogDiagnostics: kDebugMode,
   navigatorKey: _rootNavigatorKey,
   initialLocation: '/',

@@ -13,19 +13,30 @@ import '../../../../../core/data/models/success_model.dart';
 
 part 'categories_state.dart';
 
-class CategoriesCubit extends Cubit<CategoriesState> {
+class CategoriesCubit extends Cubit<CategoriesState>{
   CategoriesCubit({required this.baseCategoriesEndpointsActions}) : super(CategoriesInitial());
 
   static CategoriesCubit get(context) => BlocProvider.of(context);
   final BaseCategoriesEndpointsActions baseCategoriesEndpointsActions;
 
   Future<void> getCategories({required String keywordSearch, pageNumber = pageNumber, int pageSize = pageSize}) async {
-    emit(GetCategoriesState(isLoaded: false, isSuccess: false, message: "", pagination: null, statusCode: 0));
+    emit(GetCategoriesState(isLoaded: false, isSuccess: false, message: "", categoriesPaginated: null, statusCode: 0));
     Either<ErrorModel, SuccessModel<PaginationModel<CategoryModel>>> x = await baseCategoriesEndpointsActions.getCategoriesAsync(keywordSearch: keywordSearch, pageNumber: pageNumber, pageSize: pageSize);
     x.match((l){
-      emit(GetCategoriesState(isLoaded: true, isSuccess: false, message: l.message, pagination: null, statusCode: l.statusCode));
+      emit(GetCategoriesState(isLoaded: true, isSuccess: false, message: l.message, categoriesPaginated: null, statusCode: l.statusCode));
     }, (r){
-      emit(GetCategoriesState(isLoaded: true, isSuccess: true, message: r.message, pagination: r.data, statusCode: r.statusCode));
+      emit(GetCategoriesState(isLoaded: true, isSuccess: true, message: r.message, categoriesPaginated: r.data, statusCode: r.statusCode));
+    });
+  }
+
+  Future<void> addCategory({required CategoryModel categoryModel}) async {
+    emit(AddEditCategoryState(isLoaded: false, isSuccess: false, message: "", statusCode: 0));
+    Either<ErrorModel, SuccessModel<CategoryModel>> x = await baseCategoriesEndpointsActions.addEditCategoryAsync(category: categoryModel);
+    x.match((l){
+      emit(AddEditCategoryState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode));
+    }, (r){
+      emit(AddEditCategoryState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode));
+      getCategories(keywordSearch: "");
     });
   }
 }

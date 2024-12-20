@@ -1,7 +1,9 @@
-import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:course_dashboard/core/data/models/pagination_model.dart';
+import 'package:course_dashboard/core/enums/operations_enums.dart';
+import 'package:course_dashboard/features/business/app_cubit.dart';
 import 'package:course_dashboard/features/sections/categories/business/cubit_controller/categories_cubit.dart';
 import 'package:course_dashboard/features/sections/categories/data/models/category_model.dart';
+import 'package:course_dashboard/features/sections/categories/presentaion/dialogs/category_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +22,7 @@ class CategoriesSection extends StatefulWidget {
 
 class _CategoriesSectionState extends State<CategoriesSection> {
   late CategoriesCubit categoryCubit;
+  late AppCubit appCubit;
   late TextEditingController searchController;
 
   int? pageNumber, totalPages;
@@ -28,6 +31,7 @@ class _CategoriesSectionState extends State<CategoriesSection> {
   void initState() {
     super.initState();
     categoryCubit = CategoriesCubit.get(context)..getCategories(keywordSearch: "");
+    appCubit = AppCubit.get(context);
     searchController = TextEditingController();
   }
 
@@ -50,26 +54,28 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                   height:
                   smallVerticalPadding(context: context),
                 ),
-                !(isMobileSize(context: context) ||
-                    isTabletSize(context: context))
-                    ? Row(
-                  children:
-                  appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة صنف جديد", searchController: searchController, labelText: "بحث عن ضنف", hintText: "إضافة صنف جديد", onSearchTap: (v){
-                    categoryCubit.getCategories(keywordSearch: searchController.text);
-                  }, onAddTap: (){
-
-                  }),
-                )
-                    : Column(
-                  crossAxisAlignment:
-                  CrossAxisAlignment.center,
-                  children:
-                  appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة صنف جديد", searchController: searchController, labelText: "بحث عن ضنف", hintText: "إضافة صنف جديد", onSearchTap: (v){
-                    categoryCubit.getCategories(keywordSearch: searchController.text);
-                  }, onAddTap: (){
-
-                  }),
-                ),
+                BlocConsumer<CategoriesCubit, CategoriesState>(
+                  buildWhen: (previous, current) => current is AddEditCategoryState,
+                  listener: (context, state) {
+                    if(state is AddEditCategoryState && state.isLoaded){
+                      if(state.isSuccess){
+                        appCubit.runAnOption(operations: OperationsEnums.SUCCESS, successMessage: state.message);
+                      } else {
+                        appCubit.runAnOption(operations: OperationsEnums.FAIL, successMessage: state.message);
+                      }
+                    }
+                  },
+                  builder: (context, state) {
+                    if(state is AddEditCategoryState && ! state.isLoaded){
+                      return const SingleChildScrollView();
+                    }
+                    return SizedBox(
+                      child: !(isMobileSize(context: context) || isTabletSize(context: context))
+                        ? Row(children: addButtonWithSearchTextBox(context),)
+                        : Column(crossAxisAlignment: CrossAxisAlignment.center, children: addButtonWithSearchTextBox(context)),
+                );
+  },
+),
                 SizedBox(
                   height:
                   smallVerticalPadding(context: context),
@@ -91,7 +97,7 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                         categoryCubit.getCategories(keywordSearch: "");
                       }, child: Text("${state.message}: إعادة المحاولة", style: const TextStyle(color: Colors.redAccent),));
                     }
-                    PaginationModel<CategoryModel> data = state.pagination!;
+                    PaginationModel<CategoryModel> data = state.categoriesPaginated!;
 
                     if(data.data.isEmpty){
                       return appNoDataWidget();
@@ -100,8 +106,8 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SingleChildScrollView(
-                                              scrollDirection: Axis.horizontal,
-                                              child: Padding(
+                          scrollDirection: Axis.horizontal,
+                          child: Padding(
                           padding: EdgeInsets.all(
                               smallVerticalPadding(
                                   context: context)),
@@ -185,4 +191,13 @@ class _CategoriesSectionState extends State<CategoriesSection> {
         ),
       );
   }
+
+  List<Widget> addButtonWithSearchTextBox(BuildContext context) =>
+    appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة صنف جديد", searchController: searchController, labelText: "بحث عن ضنف", hintText: "إضافة صنف جديد", onSearchTap: (v){
+      categoryCubit.getCategories(keywordSearch: searchController.text);
+    }, onAddTap: (){
+      categoryDialog(context, null);
+    }
+  );
+
 }
