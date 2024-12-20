@@ -39,7 +39,7 @@ categoryDialog(BuildContext mainContext, CategoryModel? category) {
                         Navigator.of(context).pop();
                       },
                       icon: const Icon(Icons.close)),
-                  Expanded(child: Text(textAlign: TextAlign.end, category == null ? "عملية شراء جديدة" : category.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),)),
+                  Expanded(child: Text(textAlign: TextAlign.end, category == null ? "إضافة صنف جديد" : category.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),)),
                 ],
               )
           ),

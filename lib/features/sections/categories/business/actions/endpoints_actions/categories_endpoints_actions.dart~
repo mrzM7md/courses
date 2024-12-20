@@ -79,7 +79,7 @@ class CategoriesEndpointsActions implements BaseCategoriesEndpointsActions {
         return Right(SuccessModel(data: null, message: jsonData['message'], statusCode: response.statusCode));
     }
 
-    return otherReturnedResponsesForDelete(statusCode: 0, elseMessage: jsonData['message']);
+    return otherReturnedResponses(statusCode: 0, elseMessage: jsonData['message']);
 
     } on SocketException catch (_) {
     return const Left(ErrorModel(message: "تحقق من اتصالك بالإنترنت", statusCode: -1));

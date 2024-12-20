@@ -6,13 +6,15 @@ class ApiConstance {
   // base link
   // static const String httpServerLink = "http://127.0.0.1:8000/api/v1";
   static const String _httpServerLink = "https://localhost:7272/api";
+  static const String _httpServerLinkWithCategories = "$_httpServerLink/Categories";
 
   // start endpoints
   static String httpLinkGetAllCategories({required int pageNumber, required int pageSize, required String keywordSearch}) => '$_httpServerLink/categories/GetAllCategoriesAsync?PageNumber=$pageNumber&PageSize=$pageSize${
       keywordSearch.trim().isEmpty ? '' : '&Search=$keywordSearch'}';
 
-  static String httpLinkCreateCategory = '$_httpServerLink/Categories/CreateCategoryAsync';
-  static String httpLinkUpdateCategory = '$_httpServerLink/Categories/UpdateCategoryAsync';
+  static String httpLinkCreateCategory = '$_httpServerLinkWithCategories/CreateCategoryAsync';
+  static String httpLinkUpdateCategory = '$_httpServerLinkWithCategories/UpdateCategoryAsync';
+  static String httpLinkDeleteCategory = '$_httpServerLinkWithCategories/UpdateCategoryAsync';
 
   static Future<http.Response> getData({required String url ,required String accessToken}) async {
     var response = await http.get(

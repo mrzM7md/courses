@@ -14,6 +14,7 @@ class ApiConstance {
 
   static String httpLinkCreateCategory = '$_httpServerLinkWithCategories/CreateCategoryAsync';
   static String httpLinkUpdateCategory = '$_httpServerLinkWithCategories/UpdateCategoryAsync';
+  static String httpLinkDeleteCategory({required int categoryId}) => '$_httpServerLinkWithCategories/RemoveCategoryAsync?categoryId=$categoryId';
 
   static Future<http.Response> getData({required String url ,required String accessToken}) async {
     var response = await http.get(

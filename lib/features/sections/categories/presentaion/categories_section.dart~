@@ -56,8 +56,7 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                   smallVerticalPadding(context: context),
                 ),
                 BlocConsumer<CategoriesCubit, CategoriesState>(
-                  buildWhen: (previous, current) => current is AddEditDeleteCategoryState && current.operation == OperationsEnums.ADD,
-                  listenWhen: (previous, current) => current is AddEditDeleteCategoryState && current.operation == OperationsEnums.ADD,
+                  buildWhen: (previous, current) => current is AddEditDeleteCategoryState,
                   listener: (context, state) {
                     if(state is AddEditDeleteCategoryState && state.isLoaded){
                       if(state.isSuccess){
@@ -73,8 +72,8 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                     }
                     return SizedBox(
                       child: !(isMobileSize(context: context) || isTabletSize(context: context))
-                        ? Row(children: addButtonWithSearchTextBox(),)
-                        : Column(crossAxisAlignment: CrossAxisAlignment.center, children: addButtonWithSearchTextBox()),
+                        ? Row(children: addButtonWithSearchTextBox(context),)
+                        : Column(crossAxisAlignment: CrossAxisAlignment.center, children: addButtonWithSearchTextBox(context)),
                 );
   },
 ),
@@ -140,8 +139,8 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                                     Row(
                                       children: [
                                         BlocConsumer<CategoriesCubit, CategoriesState>(
-                                          buildWhen: (previous, current) => current is AddEditDeleteCategoryState && current.categoryId == data.data[index].id && current.operation == OperationsEnums.EDIT,
-                                          listenWhen: (previous, current) => current is AddEditDeleteCategoryState && current.isLoaded && current.categoryId == data.data[index].id && current.operation == OperationsEnums.EDIT,
+                                          buildWhen: (previous, current) => current is AddEditDeleteCategoryState && current.categoryId == data.data[index].id && current.operation == OperationsEnums.DELETE,
+                                          listenWhen: (previous, current) => current is AddEditDeleteCategoryState && current.isLoaded && current.categoryId == data.data[index].id && current.operation == OperationsEnums.DELETE,
                                           listener: (context, state) {
                                             if(state is AddEditDeleteCategoryState && state.isLoaded){
                                               if(state.isSuccess){
@@ -164,31 +163,11 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                                             const SizedBox(
                                           width: 10,
                                         ),
-                                        
-                                        BlocConsumer<CategoriesCubit, CategoriesState>(
-                                          buildWhen: (previous, current) => current is AddEditDeleteCategoryState && current.categoryId == data.data[index].id && current.operation == OperationsEnums.DELETE,
-                                          listenWhen: (previous, current) => current is AddEditDeleteCategoryState && current.isLoaded && current.categoryId == data.data[index].id && current.operation == OperationsEnums.DELETE,
-                                          listener: (context, state) {
-                                            if(state is AddEditDeleteCategoryState && state.isLoaded){
-                                              if(state.isSuccess){
-                                                appCubit.runAnOption(operations: OperationsEnums.SUCCESS, successMessage: state.message);
-                                              } else {
-                                                appCubit.runAnOption(operations: OperationsEnums.FAIL, successMessage: state.message);
-                                              }
-                                            }
-                                          },
-                                          builder: (context, state) {
-                                            if(state is AddEditDeleteCategoryState && ! state.isLoaded){
-                                              return const CircularProgressIndicator();
-                                            }
-
-                                            return IconButton(onPressed: (){
+                                        IconButton(onPressed: (){
                                           deleteDialog(context: context, title: "حذف صنف", description: data.data[index].name, onClick: (){
                                             categoryCubit.deleteCategory(categoryId: data.data[index].id!);
                                           });
-                                        }, icon: const Icon(CupertinoIcons.delete),);
-  },
-),
+                                        }, icon: const Icon(CupertinoIcons.delete),),
                                       ],
                                     ),
                                   ),
@@ -239,7 +218,7 @@ class _CategoriesSectionState extends State<CategoriesSection> {
       );
   }
 
-  List<Widget> addButtonWithSearchTextBox() =>
+  List<Widget> addButtonWithSearchTextBox(BuildContext context) =>
     appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة صنف جديد", searchController: searchController, labelText: "بحث عن ضنف", hintText: "إضافة صنف جديد", onSearchTap: (v){
       categoryCubit.getCategories(keywordSearch: searchController.text);
     }, onAddTap: (){

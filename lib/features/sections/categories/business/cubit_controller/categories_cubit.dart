@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:course_dashboard/core/data/models/pagination_model.dart';
+import 'package:course_dashboard/core/enums/operations_enums.dart';
 import 'package:course_dashboard/core/values/pagination.dart';
 import 'package:course_dashboard/features/sections/categories/business/actions/endpoints_actions/base_categories_endpoints_actions.dart';
 import 'package:course_dashboard/features/sections/categories/business/actions/endpoints_actions/categories_endpoints_actions.dart';
@@ -30,23 +31,67 @@ class CategoriesCubit extends Cubit<CategoriesState>{
   }
 
   Future<void> addCategory({required CategoryModel categoryModel}) async {
-    emit(AddEditCategoryState(isLoaded: false, isSuccess: false, message: "", statusCode: 0));
+    emit(AddEditDeleteCategoryState(isLoaded: false, isSuccess: false, message: "", statusCode: 0,
+      operation: OperationsEnums.ADD,
+    ));
     Either<ErrorModel, SuccessModel<CategoryModel>> x = await baseCategoriesEndpointsActions.addEditCategoryAsync(category: categoryModel);
     x.match((l){
-      emit(AddEditCategoryState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode));
+      emit(AddEditDeleteCategoryState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode,
+        operation: OperationsEnums.ADD,
+      ));
     }, (r){
-      emit(AddEditCategoryState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode));
+      emit(AddEditDeleteCategoryState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode,
+        operation: OperationsEnums.ADD,
+      ));
       getCategories(keywordSearch: "");
     });
   }
 
   Future<void> updateCategory({required CategoryModel categoryModel}) async {
-    emit(AddEditCategoryState(isLoaded: false, isSuccess: false, message: "", statusCode: 0));
+    emit(AddEditDeleteCategoryState(isLoaded: false, isSuccess: false, message: "", statusCode: 0, categoryId: categoryModel.id,
+      operation: OperationsEnums.EDIT,
+    ));
     Either<ErrorModel, SuccessModel<CategoryModel>> x = await baseCategoriesEndpointsActions.addEditCategoryAsync(category: categoryModel);
     x.match((l){
-      emit(AddEditCategoryState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode));
+      emit(AddEditDeleteCategoryState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode, categoryId: categoryModel.id,
+        operation: OperationsEnums.EDIT,
+              ));
     }, (r){
-      emit(AddEditCategoryState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode));
+      emit(AddEditDeleteCategoryState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode, categoryId: categoryModel.id,
+        operation: OperationsEnums.EDIT,
+      ));
+      getCategories(keywordSearch: "");
+    });
+  }
+
+  // make deleteCategory method
+  Future<void> deleteCategory({required int categoryId}) async {
+    emit(AddEditDeleteCategoryState(isLoaded: false,
+        isSuccess: false,
+        message: "",
+        statusCode: 0,
+        categoryId: categoryId,
+      operation: OperationsEnums.DELETE,
+    ));
+    Either<ErrorModel,
+        SuccessModel<String?>> x = await baseCategoriesEndpointsActions
+        .deleteCategoryAsync(categoryId: categoryId);
+    x.match((l) {
+      emit(AddEditDeleteCategoryState(isLoaded: true,
+          isSuccess: false,
+          message: l.message,
+          statusCode: l.statusCode,
+          categoryId: categoryId,
+        operation: OperationsEnums.DELETE,
+      ));
+    }, (r) {
+      emit(AddEditDeleteCategoryState(isLoaded: true,
+          isSuccess: true,
+          message: r.message,
+          statusCode: r.statusCode,
+          categoryId: categoryId,
+        operation: OperationsEnums.DELETE,
+      ));
       getCategories(keywordSearch: "");
     });
   }
