@@ -19,9 +19,9 @@ class CategoriesCubit extends Cubit<CategoriesState> {
   static CategoriesCubit get(context) => BlocProvider.of(context);
   final BaseCategoriesEndpointsActions baseCategoriesEndpointsActions;
 
-  Future<void> getCategories({required String keywordSearch}) async {
+  Future<void> getCategories({required String keywordSearch, pageNumber = pageNumber, int pageSize = pageSize}) async {
     emit(GetCategoriesState(isLoaded: false, isSuccess: false, message: "", pagination: null, statusCode: 0));
-    Either<ErrorModel, SuccessModel<PaginationModel<CategoryModel>>> x = await baseCategoriesEndpointsActions.getCategoriesAsync(keywordSearch: keywordSearch);
+    Either<ErrorModel, SuccessModel<PaginationModel<CategoryModel>>> x = await baseCategoriesEndpointsActions.getCategoriesAsync(keywordSearch: keywordSearch, pageNumber: pageNumber, pageSize: pageSize);
     x.match((l){
       emit(GetCategoriesState(isLoaded: true, isSuccess: false, message: l.message, pagination: null, statusCode: l.statusCode));
     }, (r){
