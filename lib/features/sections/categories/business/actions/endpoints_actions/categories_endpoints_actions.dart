@@ -11,7 +11,7 @@ import 'package:http/http.dart';
 
 import '../../../../../../core/values/pagination.dart';
 import '../../../data/models/category_model.dart';
-
+ 
 class CategoriesEndpointsActions implements BaseCategoriesEndpointsActions {
   @override
   Future<Either<ErrorModel, SuccessModel<PaginationModel<CategoryModel>>>> getCategoriesAsync({required String keywordSearch, int pageNumber = pageNumber, int pageSize = pageSize}) async {
