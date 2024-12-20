@@ -13,7 +13,10 @@ class CategoryModel extends Equatable{
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return id != null ? {
+      'id': id,
+      'name': name,
+    } : {
       'name': name,
     };
   }

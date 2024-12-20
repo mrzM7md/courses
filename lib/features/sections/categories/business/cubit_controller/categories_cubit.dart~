@@ -39,16 +39,4 @@ class CategoriesCubit extends Cubit<CategoriesState>{
       getCategories(keywordSearch: "");
     });
   }
-
-  Future<void> updateCategory({required CategoryModel categoryModel}) async {
-    emit(AddEditCategoryState(isLoaded: false, isSuccess: false, message: "", statusCode: 0));
-    Either<ErrorModel, SuccessModel<CategoryModel>> x = await baseCategoriesEndpointsActions.addEditCategoryAsync(category: categoryModel);
-    x.match((l){
-      emit(AddEditCategoryState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode));
-    }, (r){
-      emit(AddEditCategoryState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode));
-      getCategories(keywordSearch: "");
-    });
-  }
-
 }

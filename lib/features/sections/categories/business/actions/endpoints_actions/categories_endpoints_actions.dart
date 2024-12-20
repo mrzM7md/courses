@@ -41,8 +41,11 @@ class CategoriesEndpointsActions implements BaseCategoriesEndpointsActions {
   @override
   Future<Either<ErrorModel, SuccessModel<CategoryModel>>> addEditCategoryAsync({required CategoryModel category}) async {
     try{
-      Response response = await ApiConstance.postData(
-          url: ApiConstance.httpLinkCreateCategory, data: category.toJson(), accessToken: "");
+      Response response = category.id == null ? await ApiConstance.postData(
+          url: ApiConstance.httpLinkCreateCategory, data: category.toJson(), accessToken: ""
+      ) :
+      await ApiConstance.putData(url: ApiConstance.httpLinkUpdateCategory, accessToken: "", data: category.toJson())
+      ;
 
       print("Response: ${response.body}");
 

@@ -16,7 +16,16 @@ categoryDialog(BuildContext mainContext, CategoryModel? category) {
         CategoriesCubit categoryCubit = CategoriesCubit.get(mainContext);
 
         if(category != null){
+          nameController.text = category.name;
+        }
 
+        void submit() {
+          if(category == null){
+            categoryCubit.addCategory(categoryModel: CategoryModel(name: nameController.text.trim(), id: null));
+          }else{
+            categoryCubit.updateCategory(categoryModel: CategoryModel(name: nameController.text.trim(), id: category.id));
+          }
+          Navigator.of(context).pop();
         }
 
         return AlertDialog(
@@ -42,22 +51,25 @@ categoryDialog(BuildContext mainContext, CategoryModel? category) {
                 key: formKey,
                 child: Column(
                   children: [
-                    getAppTextField(text: "إسم الصنف", onChange: (value){}, validator: (value){
+                    getAppTextField(text: "اسم الصنف", onChange: (value){}, validator: (value){
                       if(value == null || value.toString().isEmpty){
                         return "يجب أن تدخل اسم الصنف";
                       }
-                    }, controller: nameController, fillColor: Color(appColorGrey), obscureText: false, direction: TextDirection.rtl, suffixIconButton: null,),
+                    }, controller: nameController, fillColor: Color(appColorGrey), obscureText: false,
+                      direction: TextDirection.rtl, suffixIconButton: null,
+                      onSubmitted:(value) => submit()
+                    ),
 
                     const SizedBox(height: 5,),
 
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       physics: const BouncingScrollPhysics(),
-                      child: getAppButton(color: Colors.transparent, textColor: Colors.black, text: "إضافة", onClick: (){
+                      child: getAppButton(color: Colors.transparent, textColor: Colors.black,
+                          text: category == null ? "إضافة" : "حفظ التغييرات",
+                          onClick: (){
                         if(formKey.currentState!.validate()){
-                          // submit();
-                          categoryCubit.addCategory(categoryModel: CategoryModel(name: nameController.text.trim(), id: null));
-                          Navigator.of(context).pop();
+                          submit();
                         }
                       }
                     )

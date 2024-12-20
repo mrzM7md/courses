@@ -67,7 +67,7 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                   },
                   builder: (context, state) {
                     if(state is AddEditCategoryState && ! state.isLoaded){
-                      return const SingleChildScrollView();
+                      return const CircularProgressIndicator();
                     }
                     return SizedBox(
                       child: !(isMobileSize(context: context) || isTabletSize(context: context))
@@ -137,11 +137,32 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                                   DataCell(
                                     Row(
                                       children: [
-                                        IconButton(onPressed: (){}, icon: Icon(Icons.edit),),
-                                        const SizedBox(
+                                        BlocConsumer<CategoriesCubit, CategoriesState>(
+                                          buildWhen: (previous, current) => current is AddEditCategoryState,
+                                          listenWhen: (previous, current) => current is AddEditCategoryState && current.isLoaded,
+                                          listener: (context, state) {
+                                            if(state is AddEditCategoryState && state.isLoaded){
+                                              if(state.isSuccess){
+                                                appCubit.runAnOption(operations: OperationsEnums.SUCCESS, successMessage: state.message);
+                                              } else {
+                                                appCubit.runAnOption(operations: OperationsEnums.FAIL, successMessage: state.message);
+                                              }
+                                            }
+                                          },
+                                          builder: (context, state) {
+                                            if (state is AddEditCategoryState && ! state.isLoaded) {
+                                              return const CircularProgressIndicator();
+                                            }
+
+                                            return IconButton(onPressed: (){
+                                              categoryDialog(context, data.data[index]);
+                                            }, icon: const Icon(Icons.edit),);
+                                              },
+                                            ),
+                                            const SizedBox(
                                           width: 10,
                                         ),
-                                        IconButton(onPressed: (){}, icon: Icon(CupertinoIcons.delete),),
+                                        IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.delete),),
                                       ],
                                     ),
                                   ),
