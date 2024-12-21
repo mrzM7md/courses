@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:course_dashboard/core/enums/dashboard_sections_enum.dart';
 import 'package:course_dashboard/core/enums/operations_enum.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -41,7 +40,7 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
-  void changeDashboardSection({required DashboardSectionsEnum section}){
-    emit(ChangeDashboardSectionsState(section: section));
+  void changeDashboardSection(){
+
   }
 }

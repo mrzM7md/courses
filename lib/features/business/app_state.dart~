@@ -11,7 +11,7 @@ final class RunOperationsState extends AppState {
   RunOperationsState({required this.message, required this.operation});
 }
 
-final class ChangeDashboardSectionsState extends AppState {
+final class ChangeDashboardSections extends AppState {
   final DashboardSectionsEnum section;
-  ChangeDashboardSectionsState({required this.section});
+  ChangeDashboardSections({required this.section});
 }

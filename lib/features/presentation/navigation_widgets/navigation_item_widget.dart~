@@ -11,15 +11,18 @@ class NavigationItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap(),
-      hoverColor: Color(appColorGrey),
-      focusColor: Colors.black,
-      leading: Image.asset(navigationImage ,width: mediumFontSize(context: context),),
-      title: Text(navigationName,
-        style: TextStyle(
-            fontSize: mediumFontSize(context: context),
-            color: Colors.black
+    return Container(
+      color: Colors.transparent,
+      child: ListTile(
+        onTap: () => onTap(),
+        // hoverColor: Color(appColorGrey),
+        // focusColor: Colors.black,
+        leading: Image.asset(navigationImage ,width: mediumFontSize(context: context),),
+        title: Text(navigationName,
+          style: TextStyle(
+              fontSize: mediumFontSize(context: context),
+              color: Colors.black
+          ),
         ),
       ),
     );

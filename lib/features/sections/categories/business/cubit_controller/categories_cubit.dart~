@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:course_dashboard/core/data/models/pagination_model.dart';
-import 'package:course_dashboard/core/enums/operations_enum.dart';
+import 'package:course_dashboard/core/enums/operations_enums.dart';
 import 'package:course_dashboard/core/values/pagination.dart';
 import 'package:course_dashboard/features/sections/categories/business/actions/endpoints_actions/base_categories_endpoints_actions.dart';
 import 'package:course_dashboard/features/sections/categories/business/actions/endpoints_actions/categories_endpoints_actions.dart';
@@ -32,16 +32,16 @@ class CategoriesCubit extends Cubit<CategoriesState>{
 
   Future<void> addCategory({required CategoryModel categoryModel}) async {
     emit(AddEditDeleteCategoryState(isLoaded: false, isSuccess: false, message: "", statusCode: 0,
-      operation: OperationsEnum.ADD,
+      operation: OperationsEnums.ADD,
     ));
     Either<ErrorModel, SuccessModel<CategoryModel>> x = await baseCategoriesEndpointsActions.addEditCategoryAsync(category: categoryModel);
     x.match((l){
       emit(AddEditDeleteCategoryState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode,
-        operation: OperationsEnum.ADD,
+        operation: OperationsEnums.ADD,
       ));
     }, (r){
       emit(AddEditDeleteCategoryState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode,
-        operation: OperationsEnum.ADD,
+        operation: OperationsEnums.ADD,
       ));
       getCategories(keywordSearch: "");
     });
@@ -49,16 +49,16 @@ class CategoriesCubit extends Cubit<CategoriesState>{
 
   Future<void> updateCategory({required CategoryModel categoryModel}) async {
     emit(AddEditDeleteCategoryState(isLoaded: false, isSuccess: false, message: "", statusCode: 0, categoryId: categoryModel.id,
-      operation: OperationsEnum.EDIT,
+      operation: OperationsEnums.EDIT,
     ));
     Either<ErrorModel, SuccessModel<CategoryModel>> x = await baseCategoriesEndpointsActions.addEditCategoryAsync(category: categoryModel);
     x.match((l){
       emit(AddEditDeleteCategoryState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode, categoryId: categoryModel.id,
-        operation: OperationsEnum.EDIT,
+        operation: OperationsEnums.EDIT,
               ));
     }, (r){
       emit(AddEditDeleteCategoryState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode, categoryId: categoryModel.id,
-        operation: OperationsEnum.EDIT,
+        operation: OperationsEnums.EDIT,
       ));
       getCategories(keywordSearch: "");
     });
@@ -71,7 +71,7 @@ class CategoriesCubit extends Cubit<CategoriesState>{
         message: "",
         statusCode: 0,
         categoryId: categoryId,
-      operation: OperationsEnum.DELETE,
+      operation: OperationsEnums.DELETE,
     ));
     Either<ErrorModel,
         SuccessModel<String?>> x = await baseCategoriesEndpointsActions
@@ -82,7 +82,7 @@ class CategoriesCubit extends Cubit<CategoriesState>{
           message: l.message,
           statusCode: l.statusCode,
           categoryId: categoryId,
-        operation: OperationsEnum.DELETE,
+        operation: OperationsEnums.DELETE,
       ));
     }, (r) {
       emit(AddEditDeleteCategoryState(isLoaded: true,
@@ -90,7 +90,7 @@ class CategoriesCubit extends Cubit<CategoriesState>{
           message: r.message,
           statusCode: r.statusCode,
           categoryId: categoryId,
-        operation: OperationsEnum.DELETE,
+        operation: OperationsEnums.DELETE,
       ));
       getCategories(keywordSearch: "");
     });

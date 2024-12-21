@@ -1,4 +1,4 @@
-enum OperationsEnums {
+enum OperationsEnum {
   ADD,
   EDIT,
   DELETE,

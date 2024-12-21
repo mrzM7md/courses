@@ -20,6 +20,6 @@ final class AddEditDeleteCategoryState extends CategoriesState {
   final int statusCode;
   final bool isSuccess;
   final String message;
-  final OperationsEnums operation;
+  final OperationsEnum operation;
   AddEditDeleteCategoryState({required this.statusCode, required this.isLoaded, required this.isSuccess, required this.message, this.categoryId, required this.operation});
 }

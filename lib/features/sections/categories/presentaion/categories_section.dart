@@ -1,6 +1,6 @@
 import 'package:course_dashboard/core/data/models/pagination_model.dart';
 import 'package:course_dashboard/core/dialogs/delete_dialog.dart';
-import 'package:course_dashboard/core/enums/operations_enums.dart';
+import 'package:course_dashboard/core/enums/operations_enum.dart';
 import 'package:course_dashboard/features/business/app_cubit.dart';
 import 'package:course_dashboard/features/sections/categories/business/cubit_controller/categories_cubit.dart';
 import 'package:course_dashboard/features/sections/categories/data/models/category_model.dart';
@@ -56,14 +56,14 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                   smallVerticalPadding(context: context),
                 ),
                 BlocConsumer<CategoriesCubit, CategoriesState>(
-                  buildWhen: (previous, current) => current is AddEditDeleteCategoryState && current.operation == OperationsEnums.ADD,
-                  listenWhen: (previous, current) => current is AddEditDeleteCategoryState && current.operation == OperationsEnums.ADD,
+                  buildWhen: (previous, current) => current is AddEditDeleteCategoryState && current.operation == OperationsEnum.ADD,
+                  listenWhen: (previous, current) => current is AddEditDeleteCategoryState && current.operation == OperationsEnum.ADD,
                   listener: (context, state) {
                     if(state is AddEditDeleteCategoryState && state.isLoaded){
                       if(state.isSuccess){
-                        appCubit.runAnOption(operations: OperationsEnums.SUCCESS, successMessage: state.message);
+                        appCubit.runAnOption(operations: OperationsEnum.SUCCESS, successMessage: state.message);
                       } else {
-                        appCubit.runAnOption(operations: OperationsEnums.FAIL, successMessage: state.message);
+                        appCubit.runAnOption(operations: OperationsEnum.FAIL, successMessage: state.message);
                       }
                     }
                   },
@@ -140,14 +140,14 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                                     Row(
                                       children: [
                                         BlocConsumer<CategoriesCubit, CategoriesState>(
-                                          buildWhen: (previous, current) => current is AddEditDeleteCategoryState && current.categoryId == data.data[index].id && current.operation == OperationsEnums.EDIT,
-                                          listenWhen: (previous, current) => current is AddEditDeleteCategoryState && current.isLoaded && current.categoryId == data.data[index].id && current.operation == OperationsEnums.EDIT,
+                                          buildWhen: (previous, current) => current is AddEditDeleteCategoryState && current.categoryId == data.data[index].id && current.operation == OperationsEnum.EDIT,
+                                          listenWhen: (previous, current) => current is AddEditDeleteCategoryState && current.isLoaded && current.categoryId == data.data[index].id && current.operation == OperationsEnum.EDIT,
                                           listener: (context, state) {
                                             if(state is AddEditDeleteCategoryState && state.isLoaded){
                                               if(state.isSuccess){
-                                                appCubit.runAnOption(operations: OperationsEnums.SUCCESS, successMessage: state.message);
+                                                appCubit.runAnOption(operations: OperationsEnum.SUCCESS, successMessage: state.message);
                                               } else {
-                                                appCubit.runAnOption(operations: OperationsEnums.FAIL, successMessage: state.message);
+                                                appCubit.runAnOption(operations: OperationsEnum.FAIL, successMessage: state.message);
                                               }
                                             }
                                           },
@@ -166,14 +166,14 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                                         ),
                                         
                                         BlocConsumer<CategoriesCubit, CategoriesState>(
-                                          buildWhen: (previous, current) => current is AddEditDeleteCategoryState && current.categoryId == data.data[index].id && current.operation == OperationsEnums.DELETE,
-                                          listenWhen: (previous, current) => current is AddEditDeleteCategoryState && current.isLoaded && current.categoryId == data.data[index].id && current.operation == OperationsEnums.DELETE,
+                                          buildWhen: (previous, current) => current is AddEditDeleteCategoryState && current.categoryId == data.data[index].id && current.operation == OperationsEnum.DELETE,
+                                          listenWhen: (previous, current) => current is AddEditDeleteCategoryState && current.isLoaded && current.categoryId == data.data[index].id && current.operation == OperationsEnum.DELETE,
                                           listener: (context, state) {
                                             if(state is AddEditDeleteCategoryState && state.isLoaded){
                                               if(state.isSuccess){
-                                                appCubit.runAnOption(operations: OperationsEnums.SUCCESS, successMessage: state.message);
+                                                appCubit.runAnOption(operations: OperationsEnum.SUCCESS, successMessage: state.message);
                                               } else {
-                                                appCubit.runAnOption(operations: OperationsEnums.FAIL, successMessage: state.message);
+                                                appCubit.runAnOption(operations: OperationsEnum.FAIL, successMessage: state.message);
                                               }
                                             }
                                           },

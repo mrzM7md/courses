@@ -37,8 +37,7 @@ class _NavigationItemsWidgetState extends State<NavigationItemsWidget> {
         NavigationItemWidget(navigationImage: dashboardImage, navigationName: "لوحة التحكم",
           bgColor: state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.DASHBOARD ? Color(appColorGrey) : null,
           onTap: (){
-            appCubit.changeDashboardSection(section: DashboardSectionsEnum.DASHBOARD);
-          },),
+        },),
         NavigationItemWidget(navigationImage: categoriesImage, navigationName: "الأصناف",
           bgColor: state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.CATEGORIES ? Color(appColorGrey) : null ,
           onTap: (){

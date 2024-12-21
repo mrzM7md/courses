@@ -1,6 +1,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:course_dashboard/core/components/widgets_components.dart';
-import 'package:course_dashboard/core/enums/operations_enums.dart';
+import 'package:course_dashboard/core/enums/operations_enum.dart';
 import 'package:course_dashboard/core/values/responsive_sizes.dart';
 import 'package:course_dashboard/core/values/screen_responsive_sizes.dart';
 import 'package:course_dashboard/features/business/app_cubit.dart';
@@ -106,7 +106,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               }
                               return appSuccessFailWidget(context: context,
                                   isSuccess: state.operation ==
-                                      OperationsEnums.SUCCESS,
+                                      OperationsEnum.SUCCESS,
                                   message: state.message);
                             },
                           ),
