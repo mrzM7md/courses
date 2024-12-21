@@ -11,7 +11,7 @@ class AppCubit extends Cubit<AppState> {
 
   static AppCubit get(context) => BlocProvider.of(context);
 
-  void runAnOption({required OperationsEnum operations, String successMessage = "", String errorMessage = ""}){
+  void runAnOption({required OperationsEnum operations, String successMessage = "", String errorMessage = ""}) {
     switch(operations){
       case OperationsEnum.ADD:
         {
@@ -41,7 +41,9 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
-  void changeDashboardSection({required DashboardSectionsEnum section}){
+  Future<void> changeDashboardSection({required DashboardSectionsEnum section}) async {
+    emit(AppInitial());
+    await Future.delayed(const Duration(milliseconds: 500));
     emit(ChangeDashboardSectionsState(section: section));
   }
 }

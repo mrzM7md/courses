@@ -7,33 +7,31 @@ part of 'router.dart';
 // GoRouterGenerator
 // **************************************************************************
 // Define a getter method for the app routes
-List<RouteBase> get $appRoutes => [
-  // Return a list of RouteBase objects, with the $shellRouteData object as the only element
-  $shellRouteData,
-];
 
-// Define a getter method for the shell route data
-RouteBase get $shellRouteData => GoRoute(
+final GoRouter router = GoRouter(
+    initialLocation: '/',
+    // errorPageBuilder: (context, state) {
+    //   return MaterialPage(
+    //     key: state.pageKey,
+    //     child: const Page404(),
+    //   );
+    // },
+    // observers: [
+    //   seoRouteObserver,
+    // ],
+
+    routes: [
+      GoRoute(
           path: '/',
-          // name: AppRoutes.splashScreenRouter,
-          builder: (context, state) {
-            return $DashboardRouteExtension._fromState(state);
-          }
-      );
-
-
+        builder: (context, state) => BlocProvider(create: (context) => AppCubit(),
+          child: const DashboardPage(),
+        ),
+      )
+  ],);
 
 /// THIS EXTENSION IS FOR HELP YOU TO GET ANY METHODS OF EACH PAGE ROUTE
 
-// Define an extension method for the ShellRouteData class
-extension $ShellRouteDataExtension on ShellRouteData {
-  // Define a static method to create a ShellRouteData object from a state
-  static ShellRouteData _fromState(GoRouterState state) =>
-      // Return a new ShellRouteData object
-  const ShellRouteData();
-}
 
-// Define an extension method for the DashboardRoute class
 extension $DashboardRouteExtension on DashboardRoute {
   // Define a static method to create a DashboardRoute object from a state
   static DashboardPage _fromState(GoRouterState state) => const DashboardPage();

@@ -1,11 +1,15 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:course_dashboard/core/components/widgets_components.dart';
+import 'package:course_dashboard/core/enums/dashboard_sections_enum.dart';
 import 'package:course_dashboard/core/enums/operations_enum.dart';
 import 'package:course_dashboard/core/values/responsive_sizes.dart';
 import 'package:course_dashboard/core/values/screen_responsive_sizes.dart';
 import 'package:course_dashboard/features/business/app_cubit.dart';
 import 'package:course_dashboard/features/sections/categories/business/cubit_controller/categories_cubit.dart';
 import 'package:course_dashboard/features/sections/categories/presentaion/categories_section.dart';
+import 'package:course_dashboard/features/sections/courses/business/actions/endpoints_actions/courses_endpoints_actions.dart';
+import 'package:course_dashboard/features/sections/courses/business/cubit_controller/courses_cubit.dart';
+import 'package:course_dashboard/features/sections/courses/presentaion/courses_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/services/setup_service_locator.dart';
@@ -20,110 +24,128 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  late AppCubit appCubit;
+  @override
+  void initState() {
+    super.initState();
+
+    appCubit = AppCubit.get(context);
+    appCubit.changeDashboardSection(section: DashboardSectionsEnum.CATEGORIES);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AppCubit(),
-      child: SelectionArea(
-        child: Directionality(
-          textDirection: TextDirection.rtl,
-          child: Scaffold(
-              drawer: isMobileSize(context: context) ? Drawer(
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: const <Widget>[
-                    // DrawerHeader(
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.blue,
-                    //   ),
-                    //   child: Text(
-                    //     'Drawer Header',
-                    //     style: TextStyle(
-                    //       color: Colors.white,
-                    //       fontSize: 18,
-                    //     ),
-                    //   ),
-                    // ),
-                    NavigationItemsWidget()
-                  ],
-                ),
-              ) : null,
-              appBar: AppBar(
-                leading: Builder(builder: (context) {
-                  return isMobileSize(context: context) ? IconButton(
-                    icon: const Icon(
-                      Icons.menu,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Scaffold.of(context).openDrawer();
-                    },
-                  ) : Container();
-                }),
-                actions: [
-                  Text(
-                    "تسجيل الخروج",
-                    style: TextStyle(
-                        fontSize: smallFontSize(context: context),
-                        color: Colors.white),
-                  ),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.logout,
-                        color: Colors.white,
-                      ))
+    return SelectionArea(
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: Scaffold(
+            drawer: isMobileSize(context: context) ? Drawer(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: const <Widget>[
+                  NavigationItemsWidget()
                 ],
-                title: Text(
-                  'Courses',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
+              ),
+            ) : null,
+            appBar: AppBar(
+              leading: Builder(builder: (context) {
+                return isMobileSize(context: context) ? IconButton(
+                  icon: const Icon(
+                    Icons.menu,
                     color: Colors.white,
-                    fontSize: mediumFontSize(context: context),
-                    // color: Colors.white
                   ),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ) : Container();
+              }),
+              actions: [
+                Text(
+                  "تسجيل الخروج",
+                  style: TextStyle(
+                      fontSize: smallFontSize(context: context),
+                      color: Colors.white),
+                ),
+                IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                    ))
+              ],
+              title: Text(
+                'Courses',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: mediumFontSize(context: context),
+                  // color: Colors.white
                 ),
               ),
-              body: Row(
-                children: [
-                  ConditionalBuilder(
-                    condition: isMobileSize(context: context),
-                    builder: (context) => Container(),
-                    fallback: (context) =>
-                        SizedBox(
-                            width: navigationWidth(context: context),
-                            child: const NavigationItemsWidget()),
-                  ),
-                  Expanded(
-                      child: Column(
-                        children: [
-                          BlocBuilder<AppCubit, AppState>(
-                            buildWhen: (previous,
-                                current) => current is RunOperationsState,
+            ),
+            body: Row(
+              children: [
+                ConditionalBuilder(
+                  condition: isMobileSize(context: context),
+                  builder: (context) => Container(),
+                  fallback: (context) =>
+                      SizedBox(
+                          width: navigationWidth(context: context),
+                          child: const NavigationItemsWidget()),
+                ),
+                Expanded(
+                    child: Column(
+                      children: [
+                        BlocBuilder<AppCubit, AppState>(
+                          buildWhen: (previous,
+                              current) => current is RunOperationsState,
+                          builder: (context, state) {
+                            if (state is! RunOperationsState) {
+                              return Container();
+                            }
+                            return appSuccessFailWidget(context: context,
+                                isSuccess: state.operation ==
+                                    OperationsEnum.SUCCESS,
+                                message: state.message);
+                          },
+                        ),
+                        Expanded(
+                          child: BlocBuilder<AppCubit, AppState>(
+                            buildWhen: (previous, current) => current is ChangeDashboardSectionsState || current is AppInitial,
                             builder: (context, state) {
-                              if (state is! RunOperationsState) {
-                                return Container();
+                              if(state is AppInitial){
+                                return Container(
+                                  alignment: Alignment.center,
+                                  child: const SizedBox(
+                                      width: 50,
+                                      height: 50,
+                                      child: CircularProgressIndicator()),
+                                );
                               }
-                              return appSuccessFailWidget(context: context,
-                                  isSuccess: state.operation ==
-                                      OperationsEnum.SUCCESS,
-                                  message: state.message);
+
+                              if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.COURSES) {
+                                return BlocProvider(
+                                  create: (context) =>
+                                      CoursesCubit(baseCoursesEndpointsActions: sl<CoursesEndpointsActions>()),
+                                  child: const CoursesSection(),
+                                );
+                              }
+
+                              print("<...>");
+                              return BlocProvider(
+                                create: (context) =>
+                                    CategoriesCubit(
+                                        baseCategoriesEndpointsActions: sl<
+                                            CategoriesEndpointsActions>()),
+                                child: const CategoriesSection(),
+                              );
                             },
                           ),
-                          Expanded(
-                            child: BlocProvider(
-                              create: (context) =>
-                                  CategoriesCubit(
-                                      baseCategoriesEndpointsActions: sl<
-                                          CategoriesEndpointsActions>()),
-                              child: const CategoriesSection(),
-                            ),
-                          ),
-                        ],
-                      ))
-                ],
-              )),
-        ),
+                        ),
+                      ],
+                    ))
+              ],
+            )),
       ),
     );
   }

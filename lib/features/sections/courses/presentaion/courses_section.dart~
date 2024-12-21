@@ -134,7 +134,7 @@ class _CoursesSectionState extends State<CoursesSection> {
     );
   }
   List<Widget> addButtonWithSearchTextBox() =>
-      appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة كورس جديد", searchController: searchController, labelText: "بحث عن كورس", hintText: "إضافة كورس جديد", onSearchTap: (v){
+      appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة كورس جديد", searchController: searchController, labelText: "بحث عن كورس", hintText: "إضافة صنف جديد", onSearchTap: (v){
         // categoryCubit.getCategories(keywordSearch: searchController.text);
       }, onAddTap: (){
         // categoryDialog(context, null);

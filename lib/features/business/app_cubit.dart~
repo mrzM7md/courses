@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:course_dashboard/core/enums/dashboard_sections_enum.dart';
 import 'package:course_dashboard/core/enums/operations_enum.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -10,7 +11,7 @@ class AppCubit extends Cubit<AppState> {
 
   static AppCubit get(context) => BlocProvider.of(context);
 
-  void runAnOption({required OperationsEnum operations, String successMessage = "", String errorMessage = ""}){
+  void runAnOption({required OperationsEnum operations, String successMessage = "", String errorMessage = ""}) {
     switch(operations){
       case OperationsEnum.ADD:
         {
@@ -40,7 +41,8 @@ class AppCubit extends Cubit<AppState> {
     }
   }
 
-  void changeDashboardSection(){
-
+  Future<void> changeDashboardSection({required DashboardSectionsEnum section}) async {
+    await Future.delayed(const Duration(milliseconds: 500));
+    emit(ChangeDashboardSectionsState(section: section));
   }
 }

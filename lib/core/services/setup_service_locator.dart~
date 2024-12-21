@@ -9,10 +9,7 @@ class SetupServiceLocator {
   void init() {
     /// ####################### Start Categories - Infos #######################  ///
     sl.registerLazySingleton(() => CategoriesEndpointsActions());
-    /// ####################### End Categories - Infos #######################  ///
 
-    /// ####################### Start Courses - Base #######################  ///
     sl.registerLazySingleton(() => CoursesEndpointsActions(),);
-    /// ####################### End Courses - Base #######################  ///
   }
 }
