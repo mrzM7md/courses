@@ -184,7 +184,8 @@ class _CoursesSectionState extends State<CoursesSection> {
                                 },
                               ),
                             ],
-                          )                      ),
+                          )
+                      ),
                     )
                   ],
                 );

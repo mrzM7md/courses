@@ -132,8 +132,8 @@ class _CoursesSectionState extends State<CoursesSection> {
                                 appDataCellWidget(context: context, title: "${data.data[index].id}"),
                                 DataCell(
                                   CachedNetworkImage(
-                                    width: 25,
-                                    height: 25,
+                                    width: 35,
+                                    height: 35,
                                     imageUrl: '${data.data[index].imageUrl}',
                                     placeholder: (context, url) =>  Image.asset(tempPictureImage),
                                     errorWidget: (context, url, error) => Image.asset(unAvailableFileImage),
