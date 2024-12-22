@@ -7,14 +7,26 @@ class ApiConstance {
   // static const String httpServerLink = "http://127.0.0.1:8000/api/v1";
   static const String _httpServerLink = "https://localhost:7272/api";
   static const String _httpServerLinkWithCategories = "$_httpServerLink/Categories";
+  static const String _httpServerLinkWithCourses = "$_httpServerLink/Course";
 
-  // start endpoints
-  static String httpLinkGetAllCategories({required int pageNumber, required int pageSize, required String keywordSearch}) => '$_httpServerLink/categories/GetAllCategoriesAsync?PageNumber=$pageNumber&PageSize=$pageSize${
+  static String getImageLink({required String imageUri}) => "$_httpServerLink/$imageUri";
+
+
+  // ################ START CATEGORIES ENDPOINTS LINK ################
+  static String httpLinkGetAllCategories({required int pageNumber, required int pageSize, required String keywordSearch}) => '$_httpServerLinkWithCategories/GetAllCategoriesAsync?PageNumber=$pageNumber&PageSize=$pageSize${
       keywordSearch.trim().isEmpty ? '' : '&Search=$keywordSearch'}';
 
   static String httpLinkCreateCategory = '$_httpServerLinkWithCategories/CreateCategoryAsync';
   static String httpLinkUpdateCategory = '$_httpServerLinkWithCategories/UpdateCategoryAsync';
   static String httpLinkDeleteCategory({required int categoryId}) => '$_httpServerLinkWithCategories/RemoveCategoryAsync?categoryId=$categoryId';
+  // ################ END CATEGORIES ENDPOINTS LINK ################
+
+
+  // ################ START COURSES ENDPOINTS LINK ################
+  static String httpLinkGetAllCourses({required int pageNumber, required int pageSize, required String keywordSearch}) => '$_httpServerLinkWithCourses/GetAllCoursesAsync?PageNumber=$pageNumber&PageSize=$pageSize${
+      keywordSearch.trim().isEmpty ? '' : '&Search=$keywordSearch'}';
+
+  // ################ END COURSES ENDPOINTS LINK ################
 
   static Future<http.Response> getData({required String url ,required String accessToken}) async {
     var response = await http.get(

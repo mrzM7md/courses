@@ -131,22 +131,19 @@ class _DashboardPageState extends State<DashboardPage> {
                                 );
                               }
 
-                              if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.CATEGORIES) {
-                                return BlocProvider(
-                                  create: (context) =>
-                                      CategoriesCubit(
-                                          baseCategoriesEndpointsActions: sl<
-                                              CategoriesEndpointsActions>()),
-                                  child: const CategoriesSection(),
-                                );
-                              }
-
                               return BlocProvider(
                                 create: (context) =>
                                     CoursesCubit(baseCoursesEndpointsActions: sl<CoursesEndpointsActions>()),
                                 child: const CoursesSection(),
                               );
 
+                              return BlocProvider(
+                                create: (context) =>
+                                    CategoriesCubit(
+                                        baseCategoriesEndpointsActions: sl<
+                                            CategoriesEndpointsActions>()),
+                                child: const CategoriesSection(),
+                              );
                             },
                           ),
                         ),

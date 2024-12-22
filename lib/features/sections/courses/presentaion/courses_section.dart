@@ -1,7 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:course_dashboard/core/data/models/pagination_model.dart';
 import 'package:course_dashboard/core/values/images.dart';
 import 'package:course_dashboard/features/sections/courses/business/cubit_controller/courses_cubit.dart';
+import 'package:course_dashboard/features/sections/courses/data/models/course_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/components/widgets_components.dart';
 import '../../../../core/values/colors.dart';
@@ -18,12 +23,12 @@ class CoursesSection extends StatefulWidget {
 
 class _CoursesSectionState extends State<CoursesSection> {
   late TextEditingController searchController;
-  late CoursesCubit coursesCubit;
+  late CoursesCubit courseCubit;
   
   @override
   void initState() {
     super.initState();
-    coursesCubit = CoursesCubit.get(context)..getCourses(keywordSearch: "") ;
+    courseCubit = CoursesCubit.get(context)..getCourses(keywordSearch: "") ;
     searchController = TextEditingController();
   }
 
@@ -63,7 +68,26 @@ class _CoursesSectionState extends State<CoursesSection> {
               ),
               Container(
                 alignment: AlignmentDirectional.topStart,
-                child: Column(
+                child: BlocBuilder<CoursesCubit, CoursesState>(
+                  buildWhen: (previous, current) => current is GetCoursesState,
+                  builder: (context, state) {
+                    if(state is ! GetCoursesState || ! state.isLoaded){
+                      return const CircularProgressIndicator();
+                    }
+
+                    if(! state.isSuccess){
+                      if(state.statusCode == 404){
+                        return appNoDataWidget();
+                      }
+                      return ElevatedButton(onPressed: (){
+                        courseCubit.getCourses(keywordSearch: "");
+                      }, child: Text("${state.message}: إعادة المحاولة", style: const TextStyle(color: Colors.redAccent),));
+                    }
+                    PaginationModel<CourseModel> data = state.coursesPaginated!;
+
+                    if(data.data.isEmpty){
+                      return appNoDataWidget();
+                    }                  return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SingleChildScrollView(
@@ -87,35 +111,48 @@ class _CoursesSectionState extends State<CoursesSection> {
                             appDataColumnWidget(context: context, title: "الحالات"),
                           ],
                           rows: List<DataRow>.generate(
-                            5,
+                            data.data.length,
                                 (index) => DataRow(
-                              color: WidgetStatePropertyAll(Colors.white),
+                              color: const WidgetStatePropertyAll(Colors.white),
                               // color: WidgetStatePropertyAll(Colors.red),
                               cells: <DataCell>[
                                 DataCell(
                                   Row(
                                     children: [
                                       IconButton(onPressed: (){}, icon: Icon(Icons.edit),),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10,
                                       ),
                                       IconButton(onPressed: (){}, icon: Icon(CupertinoIcons.delete),),
+                                      IconButton(onPressed: (){}, icon: Icon(CupertinoIcons.eye),),
                                     ],
                                   ),
                                 ),
                                 appDataCellWidget(context: context, title: ""),
-                                appDataCellWidget(context: context, title: "1"),
-                                appDataCellWidget(context: context, title: "1 - 1 - 2024"),
-                                appDataCellWidget(context: context, title: "1 - 1 - 2024"),
+                                appDataCellWidget(context: context, title: "${data.data[index].id}"),
+                                DataCell(
+                                  CachedNetworkImage(
+                                    width: 25,
+                                    height: 25,
+                                    imageUrl: '${data.data[index].imageUrl}',
+                                    placeholder: (context, url) =>  Image.asset(tempPictureImage),
+                                    errorWidget: (context, url, error) => Image.asset(unAvailableFileImage),
+                                  ),
+                                ),                                appDataCellWidget(context: context, title: "${data.data[index].title}"),
                                 DataCell(
                                   Row(
                                     children: [
-                                      Image.asset(lockImage, width: 30,),
+                                      ConditionalBuilder(
+                                          condition: data.data[index].isLocked ?? false,
+                                          builder: (context) => Image.asset(lockImage, width: 20,),
+                                          fallback: (context) => Container()),
                                       const SizedBox(
                                         width: 20,
                                       ),
-                                      Image.asset(downloadImage, width: 30,),
-                                    ],
+                                      ConditionalBuilder(
+                                          condition: data.data[index].isLocked ?? false,
+                                          builder: (context) => Image.asset(downloadImage, width: 20,),
+                                          fallback: (context) => Container()),                                    ],
                                   ),
                                 ),
                               ],
@@ -147,7 +184,9 @@ class _CoursesSectionState extends State<CoursesSection> {
                       ),
                     )
                   ],
-                ),
+                );
+  },
+),
               ),
             ],
           ),
@@ -157,8 +196,8 @@ class _CoursesSectionState extends State<CoursesSection> {
   }
   List<Widget> addButtonWithSearchTextBox() =>
       appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة كورس جديد", searchController: searchController, labelText: "بحث عن كورس", hintText: "إضافة كورس جديد", onSearchTap: (v){
-        // categoryCubit.getCategories(keywordSearch: searchController.text);
+        // courseCubit.getCategories(keywordSearch: searchController.text);
       }, onAddTap: (){
-        // categoryDialog(context, null);
+        // courseDialog(context, null);
       });
 }

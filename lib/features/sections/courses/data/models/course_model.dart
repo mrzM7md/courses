@@ -3,6 +3,8 @@ import 'package:course_dashboard/features/sections/courses/data/models/lesson_mo
 import 'package:course_dashboard/features/sections/courses/data/models/unit_model.dart';
 import 'package:equatable/equatable.dart';
 
+import '../../../../../core/network/server/api_constance.dart';
+
 class CourseModel extends Equatable {
   final int? id;
   final String? title;
@@ -38,12 +40,12 @@ class CourseModel extends Equatable {
         required this.lessons,
       });
 
-  factory CourseModel.fromJson(Map<String, dynamic> json) {
+  factory CourseModel.fromJson({required Map<String, dynamic> json}) {
     return CourseModel(
         id: json['id'],
         title: json['title'],
         description: json['description'],
-        imageUrl: json['imageUrl'],
+        imageUrl: ApiConstance.getImageLink(imageUri: json['imageUrl']!),
         hasCertificate: json['hasCertificate'],
         question: json['question'],
         answer: json['answer'],

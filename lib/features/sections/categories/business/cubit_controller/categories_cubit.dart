@@ -73,8 +73,7 @@ class CategoriesCubit extends Cubit<CategoriesState>{
         categoryId: categoryId,
       operation: OperationsEnum.DELETE,
     ));
-    Either<ErrorModel,
-        SuccessModel<String?>> x = await baseCategoriesEndpointsActions
+    Either<ErrorModel, SuccessModel<String?>> x = await baseCategoriesEndpointsActions
         .deleteCategoryAsync(categoryId: categoryId);
     x.match((l) {
       emit(AddEditDeleteCategoryState(isLoaded: true,
