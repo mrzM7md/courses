@@ -150,7 +150,7 @@ class _CoursesSectionState extends State<CoursesSection> {
                                         width: 20,
                                       ),
                                       ConditionalBuilder(
-                                          condition: data.data[index].isLocked ?? false,
+                                          condition: data.data[index].allowDownload ?? false,
                                           builder: (context) => Image.asset(downloadImage, width: 20,),
                                           fallback: (context) => Container()),                                    ],
                                   ),
@@ -166,21 +166,25 @@ class _CoursesSectionState extends State<CoursesSection> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 16.0),
-                        child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.arrow_back),
-                              onPressed: () {},
-                            ),
-                            Text('Page 1 / 22'),
-                            IconButton(
-                              icon: Icon(Icons.arrow_forward),
-                              onPressed: () {},
-                            ),
-                          ],
-                        ),
+                          child: Row(
+                            mainAxisAlignment:
+                            MainAxisAlignment.center,
+                            children: [
+                              data.currentPage == data.totalPages ? Container() : IconButton(
+                                icon: const Icon(Icons.arrow_back),
+                                onPressed: () {
+                                  courseCubit.getCourses(keywordSearch: searchController.text, pageNumber: data.currentPage + 1);
+                                },
+                              ),
+                              Text('${data.totalPages} / ${data.currentPage}  الصفحة'),
+                              data.currentPage == 1 ? Container() : IconButton(
+                                icon: const Icon(Icons.arrow_forward),
+                                onPressed: () {
+                                  courseCubit.getCourses(keywordSearch: searchController.text, pageNumber: data.currentPage - 1);
+                                },
+                              ),
+                            ],
+                          )
                       ),
                     )
                   ],
@@ -196,7 +200,7 @@ class _CoursesSectionState extends State<CoursesSection> {
   }
   List<Widget> addButtonWithSearchTextBox() =>
       appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة كورس جديد", searchController: searchController, labelText: "بحث عن كورس", hintText: "إضافة كورس جديد", onSearchTap: (v){
-        // courseCubit.getCategories(keywordSearch: searchController.text);
+        courseCubit.getCourses(keywordSearch: searchController.text);
       }, onAddTap: (){
         // courseDialog(context, null);
       });
