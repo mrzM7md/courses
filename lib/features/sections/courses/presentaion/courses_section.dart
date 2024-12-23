@@ -12,6 +12,7 @@ import '../../../../core/components/widgets_components.dart';
 import '../../../../core/values/colors.dart';
 import '../../../../core/values/responsive_sizes.dart';
 import '../../../../core/values/screen_responsive_sizes.dart';
+import 'dialogs/course_dialog.dart';
 
 class CoursesSection extends StatefulWidget {
   const CoursesSection({super.key});
@@ -87,39 +88,44 @@ class _CoursesSectionState extends State<CoursesSection> {
 
                     if(data.data.isEmpty){
                       return appNoDataWidget();
-                    }                  return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                            smallVerticalPadding(
-                                context: context)),
-                        child: DataTable(
-                          // headingRowColor: WidgetStatePropertyAll(Colors.red),
-                          dividerThickness: 0,
-                          // columnSpacing: 10,
-                          dataRowColor: WidgetStateProperty.all(
-                              Colors.white),
-                          columns: <DataColumn>[
-                            appDataColumnWidget(context: context, title: "خيارات"),
-                            appDataColumnWidget(context: context, title: "        "),
-                            appDataColumnWidget(context: context, title: "المعرف"),
-                            appDataColumnWidget(context: context, title: "صورة العنوان"),
-                            appDataColumnWidget(context: context, title: "العنوان"),
-                            appDataColumnWidget(context: context, title: "الحالات"),
-                          ],
-                          rows: List<DataRow>.generate(
-                            data.data.length,
-                                (index) => DataRow(
-                              color: const WidgetStatePropertyAll(Colors.white),
-                              // color: WidgetStatePropertyAll(Colors.red),
+                    }                 
+
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Padding(
+                            padding: EdgeInsets.all(
+                                smallVerticalPadding(
+                                    context: context)),
+                            child: DataTable(
+                              // headingRowColor: WidgetStatePropertyAll(Colors.red),
+                              dividerThickness: 0,
+                              // columnSpacing: 10,
+                              dataRowColor: WidgetStateProperty.all(
+                                  Colors.white),
+                              columns: <DataColumn>[
+                                appDataColumnWidget(context: context, title: "خيارات"),
+                                appDataColumnWidget(context: context, title: "        "),
+                                appDataColumnWidget(context: context, title: "المعرف"),
+                                appDataColumnWidget(context: context, title: "صورة العنوان"),
+                                appDataColumnWidget(context: context, title: "العنوان"),
+                                appDataColumnWidget(context: context, title: "الحالات"),
+                              ],
+                              rows: List<DataRow>.generate(
+                                data.data.length,
+                                    (index) => DataRow(
+                                  color: const WidgetStatePropertyAll(Colors.white),
+                                  // color: WidgetStatePropertyAll(Colors.red),
                               cells: <DataCell>[
                                 DataCell(
                                   Row(
                                     children: [
-                                      IconButton(onPressed: (){}, icon: Icon(Icons.edit),),
+                                      IconButton(onPressed: (){
+                                        courseDialog(context, data.data[index]);
+                                      }, icon: const Icon(Icons.edit),),
                                       const SizedBox(
                                         width: 10,
                                       ),
@@ -202,6 +208,7 @@ class _CoursesSectionState extends State<CoursesSection> {
       appButtonAndSearchTextBoxWidgets(context: context, title: "إضافة كورس جديد", searchController: searchController, labelText: "بحث عن كورس", hintText: "إضافة كورس جديد", onSearchTap: (v){
         courseCubit.getCourses(keywordSearch: searchController.text);
       }, onAddTap: (){
+        courseDialog(context, null);
         // courseDialog(context, null);
       });
 }

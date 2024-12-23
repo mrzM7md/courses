@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:course_dashboard/features/sections/courses/data/models/add_course_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiConstance {
@@ -10,7 +12,7 @@ class ApiConstance {
   static const String _httpServerLinkWithCategories = "$_httpServerLink/Categories";
   static const String _httpServerLinkWithCourses = "$_httpServerLink/Course";
 
-  static String getImageLink({required String imageUri}) => "$_httpServerLink$imageUri";
+  static String getImageLink({required String imageUri}) => "$_hostName$imageUri";
 
 
   // ################ START CATEGORIES ENDPOINTS LINK ################
@@ -83,4 +85,41 @@ class ApiConstance {
     );
     return response;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  static Future<http.StreamedResponse> submitForm(AddCourseModel model) async {
+    var uri = Uri.parse('https://your-api-url.com/api/endpoint');
+
+    var request = http.MultipartRequest('POST', uri);
+
+    request.fields['id'] = model.id?.toString() ?? '';
+    request.fields['title'] = model.title;
+    request.fields['description'] = model.description;
+    request.fields['hasCertificate'] = model.hasCertificate.toString();
+    request.fields['question'] = model.question;
+    request.fields['answer'] = model.answer;
+    request.fields['categoryId'] = model.categoryId.toString();
+    request.fields['allowDownload'] = model.allowDownload.toString();
+    request.fields['goals'] = model.goals ?? '';
+    request.fields['isLocked'] = model.isLocked.toString();
+
+    if (model.imageFile != null) {
+      request.files.add(await http.MultipartFile.fromPath('imageFile', model.imageFile!));
+    }
+
+    return request.send();
+  }
+
+
 }

@@ -30,7 +30,7 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
 
     appCubit = AppCubit.get(context);
-    appCubit.changeDashboardSection(section: DashboardSectionsEnum.CATEGORIES);
+    appCubit.changeDashboardSection(section: DashboardSectionsEnum.COURSES);
   }
 
   @override
@@ -124,28 +124,14 @@ class _DashboardPageState extends State<DashboardPage> {
                               }
 
                               if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.COURSES) {
-                                return BlocProvider(
-                                  create: (context) =>
-                                      CoursesCubit(baseCoursesEndpointsActions: sl<CoursesEndpointsActions>()),
-                                  child: const CoursesSection(),
-                                );
+                                return const CoursesSection();
                               }
 
                               if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.CATEGORIES) {
-                                return BlocProvider(
-                                  create: (context) =>
-                                      CategoriesCubit(
-                                          baseCategoriesEndpointsActions: sl<
-                                              CategoriesEndpointsActions>()),
-                                  child: const CategoriesSection(),
-                                );
+                                return const CategoriesSection();
                               }
 
-                              return BlocProvider(
-                                create: (context) =>
-                                    CoursesCubit(baseCoursesEndpointsActions: sl<CoursesEndpointsActions>()),
-                                child: const CoursesSection(),
-                              );
+                              return const CoursesSection();
 
                             },
                           ),

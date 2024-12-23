@@ -1,6 +1,7 @@
 import 'package:course_dashboard/features/sections/categories/business/actions/endpoints_actions/base_categories_endpoints_actions.dart';
 import 'package:course_dashboard/features/sections/categories/business/actions/endpoints_actions/categories_endpoints_actions.dart';
 import 'package:course_dashboard/features/sections/courses/business/actions/endpoints_actions/courses_endpoints_actions.dart';
+import 'package:course_dashboard/features/sections/courses/business/actions/methods_actions/courses_methods_actions.dart';
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
@@ -12,7 +13,10 @@ class SetupServiceLocator {
     /// ####################### End Categories - Infos #######################  ///
 
     /// ####################### Start Courses - Base #######################  ///
-    sl.registerLazySingleton(() => CoursesEndpointsActions(),);
+    sl.registerLazySingleton(() => CoursesMethodsActions());
+    sl.registerLazySingleton(() => CoursesEndpointsActions(
+      baseCoursesMethodsActions: sl<CoursesMethodsActions>()
+    ),);
     /// ####################### End Courses - Base #######################  ///
   }
 }

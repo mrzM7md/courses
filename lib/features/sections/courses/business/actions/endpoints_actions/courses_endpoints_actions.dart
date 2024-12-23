@@ -5,6 +5,7 @@ import 'package:course_dashboard/core/data/models/error_model.dart';
 import 'package:course_dashboard/core/data/models/pagination_model.dart';
 import 'package:course_dashboard/core/data/models/success_model.dart';
 import 'package:course_dashboard/features/sections/courses/business/actions/endpoints_actions/base_courses_endpoints_actions.dart';
+import 'package:course_dashboard/features/sections/courses/business/actions/methods_actions/base_courses_methods_actions.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/course_model.dart';
 import 'package:fpdart/src/either.dart';
 import 'package:http/http.dart';
@@ -13,6 +14,10 @@ import '../../../../../../core/network/server/api_constance.dart';
 import '../../../../../../core/values/pagination.dart';
 
 class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
+  @override
+  final BaseCoursesMethodsActions baseCoursesMethodsActions;
+  CoursesEndpointsActions({required this.baseCoursesMethodsActions}) ;
+
   @override
   Future<Either<ErrorModel, SuccessModel<PaginationModel<CourseModel>>>> getCoursesAsync({required String keywordSearch, int pageNumber = pageNumber, int pageSize = pageSize}) async {
     try{

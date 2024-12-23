@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:course_dashboard/features/sections/courses/data/models/add_course_model.dart';
 import 'package:http/http.dart' as http;
 
 class ApiConstance {
@@ -83,4 +85,47 @@ class ApiConstance {
     );
     return response;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  static Future<http.Response> postForm({
+    required String url,
+    required String accessToken,
+    required Map<String, String> data,
+    String? filePath,
+  }) async {
+    var uri = Uri.parse(url);
+    var request = http.MultipartRequest('POST', uri);
+
+    // إضافة حقول البيانات إلى الطلب
+    data.forEach((key, value) {
+      request.fields[key] = value;
+    });
+
+    // إضافة ملف إذا كان موجودًا
+    if (filePath != null && filePath.isNotEmpty) {
+      request.files.add(await http.MultipartFile.fromPath('file', filePath));
+    }
+
+    // إضافة رؤوس الطلب
+    request.headers['Authorization'] = 'Bearer $accessToken';
+    request.headers['Content-Type'] = 'multipart/form-data';
+
+    // إرسال الطلب
+    var response = await request.send();
+
+    // تحويل الاستجابة إلى http.Response
+    return http.Response.fromStream(response);
+  }
+
+
 }

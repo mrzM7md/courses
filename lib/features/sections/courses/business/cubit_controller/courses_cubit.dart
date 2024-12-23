@@ -23,10 +23,35 @@ class CoursesCubit extends Cubit<CoursesState> {
     Either<ErrorModel, SuccessModel<PaginationModel<CourseModel>>> x = await baseCoursesEndpointsActions.getCoursesAsync(keywordSearch: keywordSearch, pageNumber: pageNumber, pageSize: pageSize);
     x.match((l){
       emit(GetCoursesState(isLoaded: true, isSuccess: false, message: l.message, coursesPaginated: null, statusCode: l.statusCode));
-      print("Fail Data: ${l.message}");
     }, (r){
-      print("Success Data: ${r.data.data}");
       emit(GetCoursesState(isLoaded: true, isSuccess: true, message: r.message, coursesPaginated: r.data, statusCode: r.statusCode));
     });
   }
+
+  void changeCourseCategorySelected({required int categoryIdSelected}){
+    baseCoursesEndpointsActions.baseCoursesMethodsActions.courseCategorySelectedId = categoryIdSelected;
+    emit(ChangeCourseCategorySelectedState(selectedCategoryId: categoryIdSelected));
+  }
+
+  void changeCourseImageSelected(){
+    emit(ChangeCourseImageSelectedState());
+  }
+
+  void changeCourseAllowDownload(){
+    baseCoursesEndpointsActions.baseCoursesMethodsActions.isCourseAllowDownload = !baseCoursesEndpointsActions.baseCoursesMethodsActions.isCourseAllowDownload;
+    emit(IsCourseAllowDownloadState());
+  }
+
+  void changeCourseAllowLock(){
+    baseCoursesEndpointsActions.baseCoursesMethodsActions.isCourseLock = !baseCoursesEndpointsActions.baseCoursesMethodsActions.isCourseLock;
+    emit(IsCourseLockState());
+  }
+
+  void changeCourseHasCertificate(){
+    baseCoursesEndpointsActions.baseCoursesMethodsActions.isCourseHasCertificate = !baseCoursesEndpointsActions.baseCoursesMethodsActions.isCourseHasCertificate;
+    emit(IsCourseHasCertificateState());
+  }
+
+
+
 }
