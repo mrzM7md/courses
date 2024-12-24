@@ -31,6 +31,7 @@ class ApiConstance {
   static String httpLinkGetAllCourses({required int pageNumber, required int pageSize, required String keywordSearch}) => '$_httpServerLinkWithCourses/GetAllCoursesAsync?PageNumber=$pageNumber&PageSize=$pageSize${
       keywordSearch.trim().isEmpty ? '' : '&Search=$keywordSearch'}';
   static String httpLinkCreateCourse = '$_httpServerLinkWithCourses/CreateCourseAsync';
+  static String httpLinkUpdateCourse = '$_httpServerLinkWithCourses/UpdateCourseAsync';
 
   // ################ END COURSES ENDPOINTS LINK ################
 
@@ -130,7 +131,7 @@ class ApiConstance {
 
   static Future<http.Response> postAndPutForm({
     required String url,
-    required Uint8List fileBytes,
+    required Uint8List? fileBytes,
     required String accessToken,
     required Map<String, dynamic> data,
     required bool isPost,
@@ -139,7 +140,8 @@ class ApiConstance {
     var request = http.MultipartRequest(isPost ? 'POST' : 'PUT', uri);
 
     // التحقق من ملف الصورة وإضافته
-    if (fileBytes.isNotEmpty) {
+    if(fileBytes != null){
+      if (fileBytes.isNotEmpty) {
       request.files.add(http.MultipartFile.fromBytes(
         'ImageFile',
         fileBytes,
@@ -147,7 +149,7 @@ class ApiConstance {
       ));
     } else {
       throw Exception('Image file is null or empty');
-    }
+    }}
 
     // إضافة الحقول الإضافية بعد التحقق
     data.forEach((key, value) {

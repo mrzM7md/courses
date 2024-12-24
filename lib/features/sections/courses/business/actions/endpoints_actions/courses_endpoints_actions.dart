@@ -58,16 +58,10 @@ class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
           data: addEditCourseModel.toJson(), accessToken: "",
         ) :
       // edit
-      image == null ?
-          await ApiConstance.putData(url: ApiConstance.httpLinkUpdateCategory,
-              accessToken: "",
-              data: addEditCourseModel.toJson()
-          )
-        :
       await ApiConstance.postAndPutForm(
           fileBytes: image,
           isPost: false,
-          url: ApiConstance.httpLinkCreateCategory, data: addEditCourseModel.toJson(), accessToken: ""
+          url: ApiConstance.httpLinkUpdateCourse, data: addEditCourseModel.toJson(), accessToken: ""
       );
 
       dynamic jsonData = jsonDecode(response.body);

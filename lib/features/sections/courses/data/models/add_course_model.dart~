@@ -14,6 +14,7 @@ class AddEditCourseModel {
     this.id,
     required this.title,
     required this.description,
+    // this.imageFile,
     required this.hasCertificate,
     required this.question,
     required this.answer,
@@ -21,6 +22,7 @@ class AddEditCourseModel {
     required this.allowDownload,
     required this.goals,
     required this.isLocked,
+    // required this.imageFile,
   });
 
   Map<String, dynamic> toJson() {
@@ -28,6 +30,7 @@ class AddEditCourseModel {
       'Id': id ?? 213,
       'Title': title.trim(),
       'Description': description,
+      // 'imageFile': imageFile,
       'HasCertificate': hasCertificate,
       'Question': question.trim(),
       'Answer': answer.trim(),

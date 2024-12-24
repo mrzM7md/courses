@@ -107,8 +107,20 @@ courseDialog(BuildContext mainContext, CourseModel? course) {
           }
           // edit
           else{
-
-          }
+            courseCubit.updateCourse(addEditCourseModel: AddEditCourseModel(
+            id: course.id,
+            title: titleController.text,
+            description: jsonEncode(contentController.document.toDelta()),
+            hasCertificate: courseCubit.baseCoursesEndpointsActions.baseCoursesMethodsActions.isCourseHasCertificate,
+            question: questionController.text,
+            answer: answerController.text,
+            categoryId: courseCubit.baseCoursesEndpointsActions.baseCoursesMethodsActions.courseCategorySelectedId ?? -1,
+            allowDownload: courseCubit.baseCoursesEndpointsActions.baseCoursesMethodsActions.isCourseAllowDownload,
+            goals: goalsController.text,
+            isLocked: courseCubit.baseCoursesEndpointsActions.baseCoursesMethodsActions.isCourseLock,
+            ),
+              fileBytes: imageUrl
+          );}
           // Navigator.of(context).pop();
         }
 
@@ -410,7 +422,7 @@ courseDialog(BuildContext mainContext, CourseModel? course) {
                               }
                             }
                         );
-  },
+                            },
                           listener: (context, state) {
                             if(state is AddEditDeleteCourseState && state.isLoaded) {
                               if(! state.isSuccess) {

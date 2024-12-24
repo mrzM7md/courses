@@ -130,7 +130,7 @@ class ApiConstance {
 
   static Future<http.Response> postAndPutForm({
     required String url,
-    required Uint8List fileBytes,
+    required Uint8List? fileBytes,
     required String accessToken,
     required Map<String, dynamic> data,
     required bool isPost,
@@ -139,7 +139,8 @@ class ApiConstance {
     var request = http.MultipartRequest(isPost ? 'POST' : 'PUT', uri);
 
     // التحقق من ملف الصورة وإضافته
-    if (fileBytes.isNotEmpty) {
+    if(fileBytes != null){
+      if (fileBytes.isNotEmpty) {
       request.files.add(http.MultipartFile.fromBytes(
         'ImageFile',
         fileBytes,
@@ -147,7 +148,7 @@ class ApiConstance {
       ));
     } else {
       throw Exception('Image file is null or empty');
-    }
+    }}
 
     // إضافة الحقول الإضافية بعد التحقق
     data.forEach((key, value) {
@@ -162,6 +163,9 @@ class ApiConstance {
     if (accessToken.isNotEmpty) {
       request.headers['Authorization'] = 'Bearer $accessToken';
     }
+
+    request.headers['Content-Type'] = 'application/form';
+
     // else {
     //   throw Exception('Access token is null or empty');
     // }

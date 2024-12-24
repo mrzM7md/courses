@@ -52,11 +52,11 @@ class CoursesCubit extends Cubit<CoursesState> {
     });
   }
 
-  Future<void> updateCourse({required AddEditCourseModel addEditCourseModel, required Uint8List? fileBytes}) async {
+  Future<void> updateCourse({required AddEditCourseModel addEditCourseModel, required Uint8List? image}) async {
     emit(AddEditDeleteCourseState(isLoaded: false, isSuccess: false, message: "", statusCode: 0,
       operation: OperationsEnum.EDIT,
     ));
-    Either<ErrorModel, SuccessModel<String>> x = await baseCoursesEndpointsActions.addEditCourse(addEditCourseModel: addEditCourseModel, image: fileBytes);
+    Either<ErrorModel, SuccessModel<String>> x = await baseCoursesEndpointsActions.addEditCourse(addEditCourseModel: addEditCourseModel, image: image);
     x.match((l){
       emit(AddEditDeleteCourseState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode,
         operation: OperationsEnum.EDIT,

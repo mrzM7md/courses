@@ -58,12 +58,6 @@ class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
           data: addEditCourseModel.toJson(), accessToken: "",
         ) :
       // edit
-      image == null ?
-          await ApiConstance.putData(url: ApiConstance.httpLinkUpdateCategory,
-              accessToken: "",
-              data: addEditCourseModel.toJson()
-          )
-        :
       await ApiConstance.postAndPutForm(
           fileBytes: image,
           isPost: false,
@@ -75,7 +69,7 @@ class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
       if(response.statusCode >= 200 && response.statusCode < 300) {
         // CourseModel categoryModel = CourseModel.fromJson(json: jsonData['data']);
         SuccessModel<String> successModel = SuccessModel<String>(statusCode: response.statusCode, message: jsonData['message'], data: "");
-        return const Right(successModel);
+        return Right(successModel);
       }
 
       return otherReturnedResponses(statusCode: 0, elseMessage: jsonData['message']);
