@@ -1,43 +1,43 @@
-class AddCourseModel {
+class AddEditCourseModel {
   int? id;
   String title;
   String description;
-  String? imageFile;
   bool hasCertificate;
   String question;
   String answer;
   int categoryId;
   bool allowDownload;
-  String? goals;
-  bool? isLocked;
+  String goals;
+  bool isLocked;
 
-  AddCourseModel({
+  AddEditCourseModel({
     this.id,
     required this.title,
     required this.description,
-    this.imageFile,
+    // this.imageFile,
     required this.hasCertificate,
     required this.question,
     required this.answer,
     required this.categoryId,
     required this.allowDownload,
-    this.goals,
-    this.isLocked,
+    required this.goals,
+    required this.isLocked,
+    // required this.imageFile,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'title': title,
-      'description': description,
-      'imageFile': imageFile,
-      'hasCertificate': hasCertificate,
-      'question': question,
-      'answer': answer,
-      'categoryId': categoryId,
-      'allowDownload': allowDownload,
-      'goals': goals,
-      'isLocked': isLocked,
+      // 'Id': id ?? 213,
+      'Title': title.trim(),
+      'Description': description,
+      // 'imageFile': imageFile,
+      'HasCertificate': hasCertificate,
+      'Question': question.trim(),
+      'Answer': answer.trim(),
+      'CategoryId': categoryId,
+      'AllowDownload': allowDownload,
+      'Goals': goals.trim(),
+      'IsLocked': isLocked,
     };
   }
 }

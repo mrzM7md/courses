@@ -75,7 +75,7 @@ class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
       if(response.statusCode >= 200 && response.statusCode < 300) {
         // CourseModel categoryModel = CourseModel.fromJson(json: jsonData['data']);
         SuccessModel<String> successModel = SuccessModel<String>(statusCode: response.statusCode, message: jsonData['message'], data: "");
-        return Right(successModel);
+        return const Right(successModel);
       }
 
       return otherReturnedResponses(statusCode: 0, elseMessage: jsonData['message']);

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../components/widgets_components.dart';
 
@@ -64,4 +66,19 @@ void deleteDialog({required BuildContext context,
         ),
       )
     );
+}
+
+void getToast({
+  required String message,
+  required bool isSuccess
+}){
+  Fluttertoast.showToast(
+    msg: message,
+    toastLength: Toast.LENGTH_LONG, // seconds for android.. // 5 seconds for LONG, 1 for SHORT
+    gravity: ToastGravity.TOP,
+    timeInSecForIosWeb: 3, // seconds for web
+    backgroundColor: isSuccess ? CupertinoColors.systemGreen : Colors.redAccent,
+    textColor: Colors.white,
+    fontSize: 16.0,
+  );
 }

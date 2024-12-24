@@ -18,9 +18,9 @@ class CategoryItemWidget extends StatelessWidget {
       child: BlocBuilder<CoursesCubit, CoursesState>(
         buildWhen: (previous, current) => current is ChangeCourseCategorySelectedState,
         builder: (context, state) {
-          Color color = Color(appColorGrey);
+          Color color = CoursesCubit.get(context).baseCoursesEndpointsActions.baseCoursesMethodsActions.courseCategorySelectedId != category.id ? Color(appColorGrey) : Colors.lightBlue;
           if(state is ChangeCourseCategorySelectedState && state.selectedCategoryId == category.id){
-            color = Colors.lightBlue;
+            color = CoursesCubit.get(context).baseCoursesEndpointsActions.baseCoursesMethodsActions.courseCategorySelectedId == null ? Color(appColorGrey) : Colors.lightBlue;
           }
 
           return Container(

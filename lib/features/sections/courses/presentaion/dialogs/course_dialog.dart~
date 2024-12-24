@@ -376,7 +376,7 @@ courseDialog(BuildContext mainContext, CourseModel? course) {
                 },
               ),
 
-                    const SizedBox(height: 50,),
+                    const SizedBox(height: 120,),
 
                     SingleChildScrollView(
                         scrollDirection: Axis.horizontal,

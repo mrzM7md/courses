@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-
-import 'package:course_dashboard/features/sections/courses/data/models/add_course_model.dart';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+
+
 
 class ApiConstance {
   // base link
@@ -28,6 +30,7 @@ class ApiConstance {
   // ################ START COURSES ENDPOINTS LINK ################
   static String httpLinkGetAllCourses({required int pageNumber, required int pageSize, required String keywordSearch}) => '$_httpServerLinkWithCourses/GetAllCoursesAsync?PageNumber=$pageNumber&PageSize=$pageSize${
       keywordSearch.trim().isEmpty ? '' : '&Search=$keywordSearch'}';
+  static String httpLinkCreateCourse = '$_httpServerLinkWithCourses/CreateCourseAsync';
 
   // ################ END COURSES ENDPOINTS LINK ################
 
@@ -86,46 +89,94 @@ class ApiConstance {
     return response;
   }
 
+  // static Future<http.Response> postRequestWithFile({required String url, required Map data, required File file, required String accessToken}) async {
+  //   var request = http.MultipartRequest("POST",
+  //       Uri.parse(url),
+  //   );
+  //   var length = await file.length();
+  //   var stream = http.ByteStream(file.openRead());
+  //   var multipartFile = http.MultipartFile(
+  //     "imageFile", stream, length,
+  //       filename: basename(file.path),
+  //   );
+  //   request.files.add(multipartFile);
+  //   data.forEach((key, value) {
+  //     request.fields[key] = value;
+  //   });
+  //   var myRequest = await request.send();
+  //
+  //   var response = await http.Response.fromStream(myRequest);
+  //
+  //   return response;
+  // }
 
-
-
-
-
-
-
-
-
-
-
-  static Future<http.Response> postForm({
-    required String url,
-    required String accessToken,
-    required Map<String, String> data,
-    String? filePath,
-  }) async {
-    var uri = Uri.parse(url);
-    var request = http.MultipartRequest('POST', uri);
-
-    // إضافة حقول البيانات إلى الطلب
+  static Future<http.Response> putRequestWithFile({required String url, required Map data, required File file, required String accessToken}) async {
+    var request = http.MultipartRequest("PUT", Uri.parse(url));
+    var length = await file.length();
+    var stream = http.ByteStream(file.openRead());
+    var multipartFile = http.MultipartFile("imageFile", stream, length,
+        filename: basename(file.path));
+    request.files.add(multipartFile);
     data.forEach((key, value) {
       request.fields[key] = value;
     });
+    var myRequest = await request.send();
 
-    // إضافة ملف إذا كان موجودًا
-    if (filePath != null && filePath.isNotEmpty) {
-      request.files.add(await http.MultipartFile.fromPath('file', filePath));
+    var response = await http.Response.fromStream(myRequest);
+
+    return response;
+  }
+
+
+  static Future<http.Response> postAndPutForm({
+    required String url,
+    required Uint8List fileBytes,
+    required String accessToken,
+    required Map<String, dynamic> data,
+    required bool isPost,
+  }) async {
+    var uri = Uri.parse(url);
+    var request = http.MultipartRequest(isPost ? 'POST' : 'PUT', uri);
+
+    // التحقق من ملف الصورة وإضافته
+    if (fileBytes.isNotEmpty) {
+      request.files.add(http.MultipartFile.fromBytes(
+        'ImageFile',
+        fileBytes,
+        filename: 'xsaupload.jpg',
+      ));
+    } else {
+      throw Exception('Image file is null or empty');
     }
 
-    // إضافة رؤوس الطلب
-    request.headers['Authorization'] = 'Bearer $accessToken';
-    request.headers['Content-Type'] = 'multipart/form-data';
+    // إضافة الحقول الإضافية بعد التحقق
+    data.forEach((key, value) {
+      if (value != null) {
+        request.fields[key] = value.toString();
+      } else {
+        throw Exception('Field $key is null');
+      }
+    });
+
+    // التحقق من رمز الوصول وإضافته
+    if (accessToken.isNotEmpty) {
+      request.headers['Authorization'] = 'Bearer $accessToken';
+    }
+
+    request.headers['Content-Type'] = 'application/form';
+
+    // else {
+    //   throw Exception('Access token is null or empty');
+    // }
 
     // إرسال الطلب
-    var response = await request.send();
+    var response = await http.Response.fromStream(await request.send());
 
-    // تحويل الاستجابة إلى http.Response
-    return http.Response.fromStream(response);
+    return response;
   }
+
+
+
 
 
 }

@@ -1,12 +1,17 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:course_dashboard/core/data/models/success_model.dart';
+import 'package:course_dashboard/features/sections/courses/data/models/add_course_model.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/course_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
-import 'package:meta/meta.dart';
+
+import 'dart:typed_data';
 
 import '../../../../../core/data/models/error_model.dart';
 import '../../../../../core/data/models/pagination_model.dart';
+import '../../../../../core/enums/operations_enum.dart';
 import '../../../../../core/values/pagination.dart';
 import '../actions/endpoints_actions/base_courses_endpoints_actions.dart';
 
@@ -27,6 +32,43 @@ class CoursesCubit extends Cubit<CoursesState> {
       emit(GetCoursesState(isLoaded: true, isSuccess: true, message: r.message, coursesPaginated: r.data, statusCode: r.statusCode));
     });
   }
+
+  Future<void> addCourse({required AddEditCourseModel addEditCourseModel, required Uint8List? fileBytes}) async {
+    emit(AddEditDeleteCourseState(isLoaded: false, isSuccess: false, message: "", statusCode: 0,
+      operation: OperationsEnum.ADD,
+    ));
+    Either<ErrorModel, SuccessModel> x = await baseCoursesEndpointsActions.addEditCourse(addEditCourseModel: addEditCourseModel, image: fileBytes);
+    x.match((l){
+      print("FALSE RES: ${l.message} - CODE: ${l.statusCode} ");
+      emit(AddEditDeleteCourseState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode,
+        operation: OperationsEnum.ADD,
+      ));
+    }, (r){
+      print("TRUE RES: ${r.data}");
+      emit(AddEditDeleteCourseState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode,
+        operation: OperationsEnum.ADD,
+      ));
+      getCourses(keywordSearch: "");
+    });
+  }
+
+  Future<void> updateCourse({required AddEditCourseModel addEditCourseModel, required Uint8List? image}) async {
+    emit(AddEditDeleteCourseState(isLoaded: false, isSuccess: false, message: "", statusCode: 0,
+      operation: OperationsEnum.EDIT,
+    ));
+    Either<ErrorModel, SuccessModel<String>> x = await baseCoursesEndpointsActions.addEditCourse(addEditCourseModel: addEditCourseModel, image: image);
+    x.match((l){
+      emit(AddEditDeleteCourseState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode,
+        operation: OperationsEnum.EDIT,
+      ));
+    }, (r){
+      emit(AddEditDeleteCourseState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode,
+        operation: OperationsEnum.EDIT,
+      ));
+      getCourses(keywordSearch: "");
+    });
+  }
+
 
   void changeCourseCategorySelected({required int categoryIdSelected}){
     baseCoursesEndpointsActions.baseCoursesMethodsActions.courseCategorySelectedId = categoryIdSelected;

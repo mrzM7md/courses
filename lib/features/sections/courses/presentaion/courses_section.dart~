@@ -3,7 +3,6 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:course_dashboard/core/data/models/pagination_model.dart';
 import 'package:course_dashboard/core/enums/operations_enum.dart';
 import 'package:course_dashboard/core/values/images.dart';
-import 'package:course_dashboard/features/business/app_cubit.dart';
 import 'package:course_dashboard/features/sections/courses/business/cubit_controller/courses_cubit.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/course_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,13 +26,11 @@ class CoursesSection extends StatefulWidget {
 class _CoursesSectionState extends State<CoursesSection> {
   late TextEditingController searchController;
   late CoursesCubit courseCubit;
-  late AppCubit appCubit;
 
   @override
   void initState() {
     super.initState();
     courseCubit = CoursesCubit.get(context)..getCourses(keywordSearch: "") ;
-    appCubit = AppCubit.get(context);
     searchController = TextEditingController();
   }
 

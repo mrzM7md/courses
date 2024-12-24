@@ -1,6 +1,6 @@
 part of 'courses_cubit.dart';
 
-// @immutable
+@immutable
 sealed class CoursesState {}
 
 final class CoursesInitial extends CoursesState {}
