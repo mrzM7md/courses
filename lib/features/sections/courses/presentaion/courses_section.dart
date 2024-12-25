@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:course_dashboard/core/data/models/pagination_model.dart';
+import 'package:course_dashboard/core/dialogs/delete_dialog.dart';
 import 'package:course_dashboard/core/enums/operations_enum.dart';
 import 'package:course_dashboard/core/values/images.dart';
 import 'package:course_dashboard/features/business/app_cubit.dart';
@@ -57,31 +58,29 @@ class _CoursesSectionState extends State<CoursesSection> {
                 height:
                 smallVerticalPadding(context: context),
               ),
-              BlocConsumer<CoursesCubit, CoursesState>(
-                listenWhen: (previous, current) => current is AddEditDeleteCourseState,
-                listener: (context, state) {
-                  if(state is AddEditDeleteCourseState && state.isLoaded){
-                    if(state.isSuccess){
-                      appCubit.runAnOption(operations: OperationsEnum.SUCCESS, successMessage: state.message);
-                    } else {
-                      appCubit.runAnOption(operations: OperationsEnum.FAIL, successMessage: state.message);
-                    }
-                  }
-                },
-                  builder: (context, state) {
-                    return SizedBox(
-                child: !(isMobileSize(context: context) ||
-                    isTabletSize(context: context))
-                    ? Row(
-                    children: addButtonWithSearchTextBox()
-                )
-                    : Column(
-                    crossAxisAlignment:
-                    CrossAxisAlignment.center,
-                    children: addButtonWithSearchTextBox()
-                ),
-              );
-  },
+          BlocListener<CoursesCubit, CoursesState>(
+            listenWhen: (previous, current) => current is AddEditDeleteCourseState && current.isLoaded && current.operation == OperationsEnum.ADD,
+            listener: (context, state) {
+              if(state is AddEditDeleteCourseState){
+                if(state.isSuccess){
+                  appCubit.runAnOption(operations: OperationsEnum.SUCCESS, successMessage: state.message);
+                } else {
+                  appCubit.runAnOption(operations: OperationsEnum.FAIL, errorMessage: state.message);
+                }
+              }
+            },
+            child: SizedBox(
+            child: !(isMobileSize(context: context) ||
+                isTabletSize(context: context))
+                ? Row(
+                children: addButtonWithSearchTextBox()
+            )
+                : Column(
+                crossAxisAlignment:
+                CrossAxisAlignment.center,
+                children: addButtonWithSearchTextBox()
+            ),
+          ),
 ),
               SizedBox(
                 height:
@@ -143,14 +142,45 @@ class _CoursesSectionState extends State<CoursesSection> {
                                 DataCell(
                                   Row(
                                     children: [
-                                      IconButton(onPressed: (){
-                                        courseDialog(context, data.data[index]);
+                                      BlocListener<CoursesCubit, CoursesState>(
+                                        listenWhen: (previous, current) => current is AddEditDeleteCourseState && current.isLoaded && current.courseId == data.data[index].id && current.operation == OperationsEnum.EDIT,
+                                        listener: (context, state) {
+                                          if(state is AddEditDeleteCourseState){
+                                            if(state.isSuccess){
+                                              appCubit.runAnOption(operations: OperationsEnum.SUCCESS, successMessage: state.message);
+                                            } else {
+                                              appCubit.runAnOption(operations: OperationsEnum.FAIL, errorMessage: state.message);
+                                            }
+                                          }
+                                          },
+                                          child: IconButton(onPressed: (){
+                                            courseDialog(context, data.data[index]);
                                       }, icon: const Icon(Icons.edit),),
+),
                                       const SizedBox(
                                         width: 10,
                                       ),
-                                      IconButton(onPressed: (){}, icon: Icon(CupertinoIcons.delete),),
-                                      IconButton(onPressed: (){}, icon: Icon(CupertinoIcons.eye),),
+                                     BlocConsumer<CoursesCubit, CoursesState>(
+                                  buildWhen: (previous, current) => current is AddEditDeleteCourseState && current.courseId == data.data[index].id && current.operation == OperationsEnum.DELETE,
+                                  listenWhen: (previous, current) => current is AddEditDeleteCourseState && current.isLoaded && current.courseId == data.data[index].id && current.operation == OperationsEnum.DELETE,
+                                  listener: (context, state) {
+                                    if(state is AddEditDeleteCourseState && state.isLoaded){
+                                      if(state.isSuccess){
+                                        appCubit.runAnOption(operations: OperationsEnum.SUCCESS, successMessage: state.message);
+                                      } else {
+                                        appCubit.runAnOption(operations: OperationsEnum.FAIL, errorMessage: state.message);
+                                      }
+                                    }
+                                  },
+                                  builder: (context, state) {
+                                    return IconButton(onPressed: (){
+                                      deleteDialog(context: context, title: "حذف كورس", description: data.data[index].title ?? "", onClick: (){
+                                        courseCubit.deleteCourse(courseId: data.data[index].id!);
+                                      });
+                                    }, icon: const Icon(CupertinoIcons.delete),);
+                                  },
+                                ),
+                                      IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.eye),),
                                     ],
                                   ),
                                 ),

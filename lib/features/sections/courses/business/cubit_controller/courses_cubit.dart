@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:course_dashboard/core/data/models/success_model.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/add_course_model.dart';
@@ -39,12 +37,11 @@ class CoursesCubit extends Cubit<CoursesState> {
     ));
     Either<ErrorModel, SuccessModel> x = await baseCoursesEndpointsActions.addEditCourse(addEditCourseModel: addEditCourseModel, image: fileBytes);
     x.match((l){
-      print("FALSE RES: ${l.message} - CODE: ${l.statusCode} ");
       emit(AddEditDeleteCourseState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode,
         operation: OperationsEnum.ADD,
       ));
     }, (r){
-      print("TRUE RES: ${r.data}");
+      // print("TRUE RES: ${r.data}");
       emit(AddEditDeleteCourseState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode,
         operation: OperationsEnum.ADD,
       ));
@@ -60,14 +57,47 @@ class CoursesCubit extends Cubit<CoursesState> {
     x.match((l){
       emit(AddEditDeleteCourseState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode,
         operation: OperationsEnum.EDIT,
+        courseId: addEditCourseModel.id
       ));
     }, (r){
       emit(AddEditDeleteCourseState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode,
         operation: OperationsEnum.EDIT,
+          courseId: addEditCourseModel.id,
       ));
       getCourses(keywordSearch: "");
     });
   }
+
+  Future<void> deleteCourse({required int courseId}) async {
+    emit(AddEditDeleteCourseState(isLoaded: false,
+      isSuccess: false,
+      message: "",
+      statusCode: 0,
+      courseId: courseId,
+      operation: OperationsEnum.DELETE,
+    ));
+    Either<ErrorModel, SuccessModel<String?>> x = await baseCoursesEndpointsActions
+        .deleteCourseAsync(courseId: courseId);
+    x.match((l) {
+      emit(AddEditDeleteCourseState(isLoaded: true,
+        isSuccess: false,
+        message: l.message,
+        statusCode: l.statusCode,
+        courseId: courseId,
+        operation: OperationsEnum.DELETE,
+      ));
+    }, (r) {
+      emit(AddEditDeleteCourseState(isLoaded: true,
+        isSuccess: true,
+        message: r.message,
+        statusCode: r.statusCode,
+        courseId: courseId,
+        operation: OperationsEnum.DELETE,
+      ));
+      getCourses(keywordSearch: "");
+    });
+  }
+
 
 
   void changeCourseCategorySelected({required int categoryIdSelected}){

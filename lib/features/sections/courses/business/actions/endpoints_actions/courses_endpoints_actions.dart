@@ -113,6 +113,35 @@ class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
     return Left(ErrorModel(message: elseMessage, statusCode: statusCode));
   }
 
+  @override
+  Future<Either<ErrorModel, SuccessModel<String>>> deleteCourseAsync({required int courseId}) async {
+    try{
+      Response response = await ApiConstance.deleteData(
+          url: ApiConstance.httpLinkDeleteCourse(courseId: courseId),
+          accessToken: ""
+      );
+
+      dynamic jsonData = jsonDecode(response.body);
+      if(response.statusCode >= 200 && response.statusCode < 300) {
+        return Right(SuccessModel(data: "", message: jsonData['message'], statusCode: response.statusCode));
+      }
+
+      if(response.statusCode >= 300) {
+        return Left(ErrorModel(message: jsonData['message'], statusCode: response.statusCode));
+      }
+
+      return otherReturnedResponsesForDelete(statusCode: 0, elseMessage: jsonData['message']);
+
+    } on SocketException catch (_) {
+      return const Left(ErrorModel(message: "تحقق من اتصالك بالإنترنت", statusCode: -1));
+    } on FormatException catch (_) {
+      return const Left(ErrorModel(message: "الرابط غير صحيح", statusCode: -1));
+    } catch (ex) {
+      return const Left(
+          ErrorModel(message: "الخادم غير متوفر حاليًا", statusCode: -1));
+    }
+  }
+
 
 // @override
   // Future<Either<ErrorModel, SuccessModel<CourseModel>>> addEditCourse({required File? image, required AddCourseModel keywordSearch}) {

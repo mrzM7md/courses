@@ -18,4 +18,5 @@ abstract class BaseCoursesEndpointsActions {
 
   Future<Either<ErrorModel, SuccessModel<PaginationModel<CourseModel>>>> getCoursesAsync({required String keywordSearch, int pageNumber = pageNumber, int pageSize = pageSize});
   Future<Either<ErrorModel, SuccessModel<String>>> addEditCourse({required Uint8List? image ,required AddEditCourseModel addEditCourseModel});
+  Future<Either<ErrorModel, SuccessModel<String>>> deleteCourseAsync({required int courseId});
 }

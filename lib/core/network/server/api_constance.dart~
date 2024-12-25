@@ -31,6 +31,8 @@ class ApiConstance {
   static String httpLinkGetAllCourses({required int pageNumber, required int pageSize, required String keywordSearch}) => '$_httpServerLinkWithCourses/GetAllCoursesAsync?PageNumber=$pageNumber&PageSize=$pageSize${
       keywordSearch.trim().isEmpty ? '' : '&Search=$keywordSearch'}';
   static String httpLinkCreateCourse = '$_httpServerLinkWithCourses/CreateCourseAsync';
+  static String httpLinkUpdateCourse = '$_httpServerLinkWithCourses/UpdateCourseAsync';
+  static String httpLinkDeleteCourse({required int courseId}) => '$_httpServerLinkWithCategories/RemoveCourseAsync/$courseId';
 
   // ################ END COURSES ENDPOINTS LINK ################
 

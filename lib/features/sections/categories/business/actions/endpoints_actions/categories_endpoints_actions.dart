@@ -73,9 +73,16 @@ class CategoriesEndpointsActions implements BaseCategoriesEndpointsActions {
         accessToken: ""
       );
 
-    dynamic jsonData = jsonDecode(response.body);
-    if(response.statusCode >= 200 && response.statusCode < 300) {
+
+      dynamic jsonData = jsonDecode(response.body);
+
+
+      if(response.statusCode >= 200 && response.statusCode < 300) {
         return Right(SuccessModel(data: null, message: jsonData['message'], statusCode: response.statusCode));
+    }
+
+    if(response.statusCode >= 300) {
+      return Left(ErrorModel(message: jsonData['message'], statusCode: response.statusCode));
     }
 
     return otherReturnedResponsesForDelete(statusCode: 0, elseMessage: jsonData['message']);

@@ -173,7 +173,7 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                                               if(state.isSuccess){
                                                 appCubit.runAnOption(operations: OperationsEnum.SUCCESS, successMessage: state.message);
                                               } else {
-                                                appCubit.runAnOption(operations: OperationsEnum.FAIL, errorMessage: state.message);
+                                                appCubit.runAnOption(operations: OperationsEnum.FAIL, successMessage: state.message);
                                               }
                                             }
                                           },

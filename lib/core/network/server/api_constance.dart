@@ -32,6 +32,7 @@ class ApiConstance {
       keywordSearch.trim().isEmpty ? '' : '&Search=$keywordSearch'}';
   static String httpLinkCreateCourse = '$_httpServerLinkWithCourses/CreateCourseAsync';
   static String httpLinkUpdateCourse = '$_httpServerLinkWithCourses/UpdateCourseAsync';
+  static String httpLinkDeleteCourse({required int courseId}) => '$_httpServerLinkWithCourses/RemoveCourseAsync/$courseId';
 
   // ################ END COURSES ENDPOINTS LINK ################
 

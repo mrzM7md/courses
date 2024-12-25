@@ -428,6 +428,7 @@ courseDialog(BuildContext mainContext, CourseModel? course) {
                               if(! state.isSuccess) {
                                 getToast(message: state.message, isSuccess: false);
                               } else{
+
                                 Navigator.pop(context);
                               }
                             }

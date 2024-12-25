@@ -15,13 +15,13 @@ final class GetCoursesState extends CoursesState {
 }
 
 final class AddEditDeleteCourseState extends CoursesState {
-  final int? categoryId;
+  final int? courseId;
   final bool isLoaded;
   final int statusCode;
   final bool isSuccess;
   final String message;
   final OperationsEnum operation;
-  AddEditDeleteCourseState({required this.statusCode, required this.isLoaded, required this.isSuccess, required this.message, this.categoryId, required this.operation});
+  AddEditDeleteCourseState({required this.statusCode, required this.isLoaded, required this.isSuccess, required this.message, this.courseId, required this.operation});
 }
 
 final class ChangeCourseCategorySelectedState extends CoursesState {

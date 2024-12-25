@@ -75,6 +75,7 @@ class CategoriesCubit extends Cubit<CategoriesState>{
     Either<ErrorModel, SuccessModel<String?>> x = await baseCategoriesEndpointsActions
         .deleteCategoryAsync(categoryId: categoryId);
     x.match((l) {
+      // print("OKMESSAGEL ${l.message}");
       emit(AddEditDeleteCategoryState(isLoaded: true,
           isSuccess: false,
           message: l.message,
