@@ -45,7 +45,6 @@ courseDetailDialog(BuildContext mainContext, CourseModel course) {
           }
         }
 
-        // units
         StringBuffer unitsText = StringBuffer("");
         if(course.units!.isNotEmpty) {
           for (int i = 0; i < course.units!.length; i++) {
@@ -57,7 +56,6 @@ courseDetailDialog(BuildContext mainContext, CourseModel course) {
           }
         }
 
-        // lessons
         StringBuffer lessonsText = StringBuffer("");
         if(course.lessons!.isNotEmpty) {
           for (int i = 0; i < course.lessons!.length; i++) {
