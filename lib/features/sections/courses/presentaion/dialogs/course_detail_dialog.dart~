@@ -136,8 +136,8 @@ courseDetailDialog(BuildContext mainContext, CourseModel course) {
                     Text("$unitsText", style: TextStyle(fontSize:smallFontSize(context: context) )),
 
                     const Divider(),
-                    Text("الدروس", style: TextStyle(fontSize:mediumFontSize(context: context) )),
-                    Text("$lessonsText", style: TextStyle(fontSize:smallFontSize(context: context) )),
+                    Text("الوحدات", style: TextStyle(fontSize:mediumFontSize(context: context) )),
+                    Text("$unitsText", style: TextStyle(fontSize:smallFontSize(context: context) )),
 
 
                   ],

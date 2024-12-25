@@ -205,16 +205,16 @@ courseDialog(BuildContext mainContext, CourseModel? course) {
                         if(state is ChangeCourseImageSelectedState){
                           return Image.memory(
                             imageUrl!,
-                            height: 200,
-                            width: 200,
+                            height: 150,
+                            width: 150,
                             fit: BoxFit.cover,
                           );
                         }
 
                         if(course != null && course.imageUrl != null){
                           return CachedNetworkImage(
-                            width: 200,
-                            height: 200,
+                            width: 150,
+                            height: 150,
                             imageUrl: '${course.imageUrl}',
                             placeholder: (context, url) =>  Image.asset(tempPictureImage),
                             errorWidget: (context, url, error) => Image.asset(unAvailableFileImage),

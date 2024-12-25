@@ -7,6 +7,7 @@ import 'package:course_dashboard/core/values/images.dart';
 import 'package:course_dashboard/features/business/app_cubit.dart';
 import 'package:course_dashboard/features/sections/courses/business/cubit_controller/courses_cubit.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/course_model.dart';
+import 'package:course_dashboard/features/sections/courses/presentaion/dialogs/course_detail_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -180,7 +181,9 @@ class _CoursesSectionState extends State<CoursesSection> {
                                     }, icon: const Icon(CupertinoIcons.delete),);
                                   },
                                 ),
-                                      IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.eye),),
+                                      IconButton(onPressed: (){
+                                        courseDetailDialog(context, data.data[index]);
+                                      }, icon: const Icon(CupertinoIcons.eye),),
                                     ],
                                   ),
                                 ),

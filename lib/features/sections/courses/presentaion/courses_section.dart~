@@ -58,7 +58,18 @@ class _CoursesSectionState extends State<CoursesSection> {
                 height:
                 smallVerticalPadding(context: context),
               ),
-          SizedBox(
+          BlocListener<CoursesCubit, CoursesState>(
+            listenWhen: (previous, current) => current is AddEditDeleteCourseState && current.isLoaded && current.operation == OperationsEnum.ADD,
+            listener: (context, state) {
+              if(state is AddEditDeleteCourseState){
+                if(state.isSuccess){
+                  appCubit.runAnOption(operations: OperationsEnum.SUCCESS, successMessage: state.message);
+                } else {
+                  appCubit.runAnOption(operations: OperationsEnum.FAIL, errorMessage: state.message);
+                }
+              }
+            },
+            child: SizedBox(
             child: !(isMobileSize(context: context) ||
                 isTabletSize(context: context))
                 ? Row(
@@ -70,6 +81,7 @@ class _CoursesSectionState extends State<CoursesSection> {
                 children: addButtonWithSearchTextBox()
             ),
           ),
+),
               SizedBox(
                 height:
                 smallVerticalPadding(context: context),

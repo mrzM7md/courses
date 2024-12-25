@@ -10,8 +10,8 @@ double smallFontSize({required BuildContext context}) =>
     isTabletSize(context: context) ? 7.sp : 8.sp;
 
 double mediumFontSize({required BuildContext context}) =>
-    isMobileSize(context: context) ? 8.sp :
-    isTabletSize(context: context) ? 12.sp : 14.sp;
+    isMobileSize(context: context) ? 10.sp :
+    isTabletSize(context: context) ? 14.sp : 16.sp;
 
 double largeFontSize({required BuildContext context}) =>
     isMobileSize(context: context) ? 12.sp :
