@@ -14,16 +14,24 @@ courseDetailDialog(BuildContext mainContext, CourseModel course) {
       barrierDismissible: false, // منع الإغلاق عند الضغط خارج النافذة
       builder: (BuildContext context) {
 
-        TextEditingController titleController = TextEditingController();
-        TextEditingController questionController = TextEditingController();
-        TextEditingController answerController = TextEditingController();
-        TextEditingController goalsController = TextEditingController();
+        QuillController contentController = QuillController.basic()..formatSelection(Attribute.rtl);
 
-        QuillController contentController = QuillController(
+        try {
+          // محاولة تعيين المستند من JSON
+          contentController = QuillController(
             readOnly: true,
-            document: Document.fromJson(jsonDecode(course.description ?? ""),
-            ), selection: const TextSelection.collapsed(offset: 0)
-        );
+            document: Document.fromJson(jsonDecode(course.description ?? "")),
+            selection: const TextSelection.collapsed(offset: 0),
+          );
+        } catch (e) {
+          // إذا كانت هناك مشكلة (مثلاً النص العادي) قم بتحويل النص العادي إلى مستند Quill
+          contentController = QuillController(
+            readOnly: true,
+            document: Document()..insert(0, course.description ?? ''),
+            selection: const TextSelection.collapsed(offset: 0),
+          );
+          contentController.formatSelection(Attribute.rtl);
+        }
 
         // goals
         StringBuffer goalText = StringBuffer("");

@@ -54,13 +54,11 @@ courseDialog(BuildContext mainContext, CourseModel? course) {
         TextEditingController answerController = TextEditingController();
         TextEditingController goalsController = TextEditingController();
 
-        QuillController contentController = QuillController.basic();
+        QuillController contentController = QuillController.basic()..formatSelection(Attribute.rtl);
 
         GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
         CoursesCubit courseCubit = CoursesCubit.get(mainContext);
-
-
 
         if(course != null){
           StringBuffer goalText = StringBuffer("");
@@ -79,7 +77,14 @@ courseDialog(BuildContext mainContext, CourseModel? course) {
           answerController.text = course.answer?? "";
           goalsController.text = goalText.toString();
           if(course.description != null && course.description!.isNotEmpty){
-            contentController.document = Document.fromJson(jsonDecode(course.description ?? ''));
+            try {
+              // محاولة تعيين المستند من JSON
+              contentController.document = Document.fromJson(jsonDecode(course.description ?? ''));
+            } catch (e) {
+              // إذا كانت هناك مشكلة (مثلاً النص العادي) قم بتحويل النص العادي إلى مستند Quill
+              contentController.document = Document()..insert(0, course.description ?? '');
+              contentController.formatSelection(Attribute.rtl);
+            }
           }
 
           courseCubit.baseCoursesEndpointsActions.baseCoursesMethodsActions.courseCategorySelectedId = course.categoryId;
