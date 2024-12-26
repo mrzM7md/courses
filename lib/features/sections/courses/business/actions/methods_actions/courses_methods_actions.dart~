@@ -136,7 +136,7 @@ class CoursesMethodsActions implements BaseCoursesMethodsActions {
   }
 
   @override
-  CourseModel deleteUnitFromCourse(CourseModel course, UnitModel unit) {
+  CourseModel concatCourseWithDeletedUnit(CourseModel course, UnitModel unit) {
     List<UnitModel> updatedUnits = course.units?? [];
     updatedUnits.removeWhere((element) => element.id == unit.id);
 

@@ -34,3 +34,17 @@ final class ChangeCourseImageSelectedState extends CoursesState {}
 final class IsCourseLockState extends CoursesState{}
 final class IsCourseAllowDownloadState extends CoursesState{}
 final class IsCourseHasCertificateState extends CoursesState{}
+
+final class AddEditDeleteUnitState extends CoursesState {
+  final int? courseId;
+  final bool isLoaded;
+  final int statusCode;
+  final bool isSuccess;
+  final String message;
+  final OperationsEnum operation;
+  final UnitModel? unitModel;
+  AddEditDeleteUnitState({required this.statusCode, required this.isLoaded, required this.isSuccess, required this.message, this.courseId, required this.operation, required this.unitModel});
+}
+
+final class IsUnitLockState extends CoursesState{}
+final class IsLessonLockState extends CoursesState{}

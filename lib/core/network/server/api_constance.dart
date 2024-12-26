@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:fpdart/fpdart.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
@@ -13,6 +14,7 @@ class ApiConstance {
   static const String _httpServerLink = "$_hostName/api";
   static const String _httpServerLinkWithCategories = "$_httpServerLink/Categories";
   static const String _httpServerLinkWithCourses = "$_httpServerLink/Course";
+  static const String _httpServerLinkWithUnits = "$_httpServerLink/Units";
 
   static String getImageLink({required String imageUri}) => "$_hostName$imageUri";
 
@@ -33,8 +35,14 @@ class ApiConstance {
   static String httpLinkCreateCourse = '$_httpServerLinkWithCourses/CreateCourseAsync';
   static String httpLinkUpdateCourse = '$_httpServerLinkWithCourses/UpdateCourseAsync';
   static String httpLinkDeleteCourse({required int courseId}) => '$_httpServerLinkWithCourses/RemoveCourseAsync/$courseId';
-
   // ################ END COURSES ENDPOINTS LINK ################
+
+  // ################ START UNITS ENDPOINTS LINK ################
+  static String httpLinkCreateUnit = '$_httpServerLinkWithUnits/CreateUnitAsync';
+  static String httpLinkUpdateUnit = '$_httpServerLinkWithUnits/UpdateUnitAsync';
+  static String httpLinkDeleteUnit({required int unitId}) => '$_httpServerLinkWithUnits/RemoveUnitAsync?unitId=$unitId';
+  // ################ END UNITS ENDPOINTS LINK ################
+
 
   static Future<http.Response> getData({required String url ,required String accessToken}) async {
     var response = await http.get(

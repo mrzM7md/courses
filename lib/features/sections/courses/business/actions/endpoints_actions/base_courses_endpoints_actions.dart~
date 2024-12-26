@@ -22,6 +22,6 @@ abstract class BaseCoursesEndpointsActions {
   Future<Either<ErrorModel, SuccessModel<String>>> deleteCourseAsync({required int courseId});
 
   Future<Either<ErrorModel, SuccessModel<UnitModel>>> addEditUnit({required UnitModel unitModel});
-  Future<Either<ErrorModel, SuccessModel<String?>>> deleteUnit({required int unitId});
+  Future<Either<ErrorModel, SuccessModel<String?>>> deleteEditUnit({required int unitId});
 
 }

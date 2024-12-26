@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:course_dashboard/core/data/models/success_model.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/add_course_model.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/course_model.dart';
+import 'package:course_dashboard/features/sections/courses/data/models/unit_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -125,5 +126,74 @@ class CoursesCubit extends Cubit<CoursesState> {
   }
 
 
+  Future<void> addUnit({required UnitModel unitModel}) async {
+    emit(AddEditDeleteUnitState(isLoaded: false, isSuccess: false, message: "", statusCode: 0,
+      operation: OperationsEnum.ADD,
+      unitModel: null
+    ));
+    Either<ErrorModel, SuccessModel<UnitModel>> x = await baseCoursesEndpointsActions.addEditUnit(unitModel: unitModel);
+    x.match((l){
+      emit(AddEditDeleteUnitState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode,
+        operation: OperationsEnum.ADD,
+          unitModel: null
+      ));
+    }, (r) async {
+      await getCourses(keywordSearch: "");
+      emit(AddEditDeleteUnitState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode,
+        operation: OperationsEnum.ADD,
+          unitModel: r.data
+      ));
+    });
+  }
+
+  Future<void> editUnit({required UnitModel unitModel}) async {
+    emit(AddEditDeleteUnitState(isLoaded: false, isSuccess: false, message: "", statusCode: 0,
+        operation: OperationsEnum.EDIT,
+        unitModel: null
+    ));
+    Either<ErrorModel, SuccessModel<UnitModel>> x = await baseCoursesEndpointsActions.addEditUnit(unitModel: unitModel);
+    x.match((l){
+      emit(AddEditDeleteUnitState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode,
+          operation: OperationsEnum.EDIT,
+          unitModel: null
+      ));
+    }, (r) async {
+      await getCourses(keywordSearch: "");
+      emit(AddEditDeleteUnitState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode,
+          operation: OperationsEnum.EDIT,
+          unitModel: r.data
+      ));
+    });
+  }
+
+  Future<void> deleteUnit({required int unitId}) async {
+    emit(AddEditDeleteUnitState(isLoaded: false, isSuccess: false, message: "", statusCode: 0,
+        operation: OperationsEnum.DELETE,
+        unitModel: null
+    ));
+    Either<ErrorModel, SuccessModel<String?>> result = await baseCoursesEndpointsActions.deleteUnit(unitId: unitId);
+    result.match((l){
+      emit(AddEditDeleteUnitState(isLoaded: true, isSuccess: false, message: l.message, statusCode: l.statusCode,
+          operation: OperationsEnum.DELETE,
+          unitModel: null
+      ));
+    }, (r) async {
+      await getCourses(keywordSearch: "");
+      emit(AddEditDeleteUnitState(isLoaded: true, isSuccess: true, message: r.message, statusCode: r.statusCode,
+          operation: OperationsEnum.DELETE,
+          unitModel: null
+      ));
+    });
+  }
+
+  void changeUnitAllowLock(){
+    baseCoursesEndpointsActions.baseCoursesMethodsActions.isUnitLock = !baseCoursesEndpointsActions.baseCoursesMethodsActions.isUnitLock;
+    emit(IsUnitLockState());
+  }
+
+  void changeLessonAllowLock(){
+    baseCoursesEndpointsActions.baseCoursesMethodsActions.isCourseLock = !baseCoursesEndpointsActions.baseCoursesMethodsActions.isUnitLock;
+    emit(IsLessonLockState());
+  }
 
 }
