@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:course_dashboard/features/sections/courses/business/actions/methods_actions/base_courses_methods_actions.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/add_course_model.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/course_model.dart';
+import 'package:course_dashboard/features/sections/courses/data/models/lesson_model.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/unit_model.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -23,5 +24,9 @@ abstract class BaseCoursesEndpointsActions {
 
   Future<Either<ErrorModel, SuccessModel<UnitModel>>> addEditUnit({required UnitModel unitModel});
   Future<Either<ErrorModel, SuccessModel<String?>>> deleteUnit({required int unitId});
+
+  Future<Either<ErrorModel, SuccessModel<LessonModel>>> addEditLesson({required LessonModel lessonModel});
+  Future<Either<ErrorModel, SuccessModel<String?>>> deleteLesson({required int lessonId});
+
 
 }

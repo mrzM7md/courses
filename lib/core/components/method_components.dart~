@@ -1,10 +1,5 @@
-import 'dart:io';
 import 'dart:typed_data';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
-
 import 'dart:html' as html;
-import 'dart:typed_data';
 import 'dart:async';
 
 Future<Uint8List?> getFileBytes(html.File file) async {
@@ -17,4 +12,22 @@ Future<Uint8List?> getFileBytes(html.File file) async {
   reader.readAsArrayBuffer(file);
 
   return completer.future;
+}
+
+
+
+String? urlValidation(String? value) {
+  if (value == null || value.isEmpty) {
+    return 'Please enter a URL';
+  }
+
+  // Regular expression for URL validation
+  const urlPattern = r'^(http|https):\/\/([A-Za-z0-9\.-]+)\.([A-Za-z]{2,6})([\/\w \.-]*)*\/?$';
+  final regExp = RegExp(urlPattern);
+
+  if (!regExp.hasMatch(value)) {
+    return 'Please enter a valid URL';
+  }
+
+  return null;
 }

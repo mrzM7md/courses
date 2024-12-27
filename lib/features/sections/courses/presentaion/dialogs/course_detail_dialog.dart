@@ -4,6 +4,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:course_dashboard/core/components/widgets_components.dart';
 import 'package:course_dashboard/core/values/responsive_sizes.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/course_model.dart';
+import 'package:course_dashboard/features/sections/courses/sections/lessons/presentaion/dialogs/delete_lesson_dialog.dart';
+import 'package:course_dashboard/features/sections/courses/sections/lessons/presentaion/dialogs/lesson_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -175,7 +177,7 @@ courseDetailDialog(BuildContext mainContext, CourseModel course) {
                                 Colors.white),
                             // color: WidgetStatePropertyAll(Colors.red),
                             cells: <DataCell>[
-                              appDataCellWidget(context: context, title: "${index+1}"),
+                              appDataCellWidget(context: context, title: "${course.units![index].id}"),
                               DataCell(
                                 Row(
                                   children: [
@@ -205,9 +207,10 @@ courseDetailDialog(BuildContext mainContext, CourseModel course) {
                     const Divider(),
 
                     CupertinoButton(onPressed: (){
-
+                      Navigator.of(context).pop();
+                      lessonDialog(mainContext: mainContext, lesson: null, course: course);
                     },
-                        child: const Text("وحدة جديدة")),
+                        child: const Text("إضافة درس جديدة")),
                   Text("الدروس", style: TextStyle(fontSize:mediumFontSize(context: context) )),
 
                     SingleChildScrollView(
@@ -233,20 +236,26 @@ courseDetailDialog(BuildContext mainContext, CourseModel course) {
                                 Colors.white),
                             // color: WidgetStatePropertyAll(Colors.red),
                             cells: <DataCell>[
-                              appDataCellWidget(context: context, title: "${index+1}"),
+                              appDataCellWidget(context: context, title: "${course.lessons![index].id}"),
                               DataCell(
                                 Row(
                                   children: [
-                                    IconButton(onPressed: (){}, icon: const Icon(Icons.edit),),
+                                    IconButton(onPressed: (){
+                                      Navigator.of(context).pop();
+                                      lessonDialog(mainContext: mainContext, lesson: course.lessons![index], course: course);
+                                    }, icon: const Icon(Icons.edit),),
                                     const SizedBox(
                                       width: 10,
                                     ),
-                                    IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.delete),),
+                                    IconButton(onPressed: (){
+                                      Navigator.of(context).pop();
+                                      deleteLessonDialog(baseContext: mainContext, lesson: course.lessons![index], course: course);
+                                    }, icon: const Icon(CupertinoIcons.delete),),
                                   ],
                                 ),
                               ),
                               appDataCellWidget(context: context, title: "${course.lessons![index].name}"),
-                              appDataCellWidget(context: context, title: "${course.lessons![index].unitName}"),
+                              appDataCellWidget(context: context, title: "${course.units?.firstWhere((u) => u.id == course.lessons![index].unitId).name}"),
                               appDataCellWidget(context: context, title: "${course.lessons![index].order}"),
                               appDataCellWidget(context: context, title: course.lessons![index].isLocked! ? "نعم" : "لا"),
                             ],

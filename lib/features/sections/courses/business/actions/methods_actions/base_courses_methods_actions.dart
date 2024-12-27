@@ -26,5 +26,11 @@ abstract class BaseCoursesMethodsActions {
   CourseModel concatCourseWithUpdatedUnit(CourseModel course, UnitModel unit);
   CourseModel deleteUnitFromCourse(CourseModel course, UnitModel unit);
 
-  CourseModel concatCourseWithNewLesson(CourseModel course, LessonsModel unit);
+  set lessonUnitSelectedId(int? value);
+  int? get lessonUnitSelectedId;
+
+  CourseModel concatCourseWithNewLesson(CourseModel course, LessonModel lesson);
+  CourseModel concatCourseWithUpdatedLesson(CourseModel course, LessonModel lesson);
+  CourseModel deleteLessonFromCourse(CourseModel course, LessonModel lesson);
+
 }

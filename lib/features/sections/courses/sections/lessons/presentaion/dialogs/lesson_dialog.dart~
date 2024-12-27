@@ -43,6 +43,7 @@ lessonDialog(
         courseCubit.baseCoursesEndpointsActions.baseCoursesMethodsActions.lessonUnitSelectedId = null;
 
           try {
+            print("Script: ${lesson!.script}");
             // محاولة تعيين المستند من JSON
             scriptController.document = Document.fromJson(jsonDecode(lesson != null ? lesson.script ?? '' : ''));
           } catch (e) {

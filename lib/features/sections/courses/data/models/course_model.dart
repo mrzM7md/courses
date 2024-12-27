@@ -20,7 +20,7 @@ class CourseModel extends Equatable {
   final String? categoryName;
   final List<GoalModel>? goals;
   final List<UnitModel>? units;
-  final List<LessonsModel>? lessons;
+  final List<LessonModel>? lessons;
 
   const CourseModel(
       { required this.id,
@@ -56,7 +56,7 @@ class CourseModel extends Equatable {
         categoryName: json['categoryName'],
         goals: json['goals'] != null ? List<GoalModel>.from(json['goals'].map((x) => GoalModel.fromJson(x))) : null,
         units: json['units'] != null ? List<UnitModel>.from(json['units'].map((x) => UnitModel.fromJson(json: x))) : null,
-        lessons: json['lessons'] != null ? List<LessonsModel>.from(json['lessons'].map((x) => LessonsModel.fromJson(json: x))) : null);
+        lessons: json['lessons'] != null ? List<LessonModel>.from(json['lessons'].map((x) => LessonModel.fromJson(json: x))) : null);
   }
 
 

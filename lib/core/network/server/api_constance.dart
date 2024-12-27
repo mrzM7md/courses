@@ -15,6 +15,7 @@ class ApiConstance {
   static const String _httpServerLinkWithCategories = "$_httpServerLink/Categories";
   static const String _httpServerLinkWithCourses = "$_httpServerLink/Course";
   static const String _httpServerLinkWithUnits = "$_httpServerLink/Units";
+  static const String _httpServerLinkWithLessons = "$_httpServerLink/Lessons";
 
   static String getImageLink({required String imageUri}) => "$_hostName$imageUri";
 
@@ -43,6 +44,12 @@ class ApiConstance {
   static String httpLinkDeleteUnit({required int unitId}) => '$_httpServerLinkWithUnits/RemoveUnitAsync?unitId=$unitId';
   // ################ END UNITS ENDPOINTS LINK ################
 
+
+  // ################ START LESSONS ENDPOINTS LINK ################
+  static String httpLinkCreateLesson = '$_httpServerLinkWithLessons/CreateLessonAsync';
+  static String httpLinkUpdateLesson = '$_httpServerLinkWithLessons/UpdateLessonAsync';
+  static String httpLinkDeleteLesson({required int lessonId}) => '$_httpServerLinkWithLessons/RemoveLessonAsync?id=$lessonId';
+  // ################ END LESSONS ENDPOINTS LINK ################
 
   static Future<http.Response> getData({required String url ,required String accessToken}) async {
     var response = await http.get(
@@ -175,10 +182,6 @@ class ApiConstance {
     }
 
     request.headers['Content-Type'] = 'application/form';
-
-    // else {
-    //   throw Exception('Access token is null or empty');
-    // }
 
     // إرسال الطلب
     var response = await http.Response.fromStream(await request.send());

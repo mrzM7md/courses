@@ -47,4 +47,22 @@ final class AddEditDeleteUnitState extends CoursesState {
 }
 
 final class IsUnitLockState extends CoursesState{}
+
+
+final class AddEditDeleteLessonState extends CoursesState {
+  final int? courseId;
+  final bool isLoaded;
+  final int statusCode;
+  final bool isSuccess;
+  final String message;
+  final OperationsEnum operation;
+  final LessonModel? lessonModel;
+  AddEditDeleteLessonState({required this.statusCode, required this.isLoaded, required this.isSuccess, required this.message, this.courseId, required this.operation, required this.lessonModel});
+}
+
 final class IsLessonLockState extends CoursesState{}
+
+final class ChangeLessonUnitSelectedState extends CoursesState {
+  final int selectedUnitId;
+  ChangeLessonUnitSelectedState({required this.selectedUnitId,});
+}

@@ -16,6 +16,7 @@ import 'dart:typed_data';
 
 import '../../../../../../core/network/server/api_constance.dart';
 import '../../../../../../core/values/pagination.dart';
+import '../../../data/models/lesson_model.dart';
 
 class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
   @override
@@ -46,7 +47,6 @@ class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
           ErrorModel(message: "الخادم غير متوفر حاليًا", statusCode: -1));
     }
   }
-
 
   @override
   Future<Either<ErrorModel, SuccessModel<String>>> addEditCourse({required Uint8List? image, required AddEditCourseModel addEditCourseModel}) async {
@@ -108,7 +108,14 @@ class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
     return Left(ErrorModel(message: elseMessage, statusCode: statusCode));
   }
 
-  Either<ErrorModel, SuccessModel<UnitModel>> otherReturnedResponsesForUnitAndLessons({required int statusCode, required String elseMessage}) {
+  Either<ErrorModel, SuccessModel<UnitModel>> otherReturnedResponsesForUnitAnd({required int statusCode, required String elseMessage}) {
+    if (statusCode  >= 500) {
+      return Left(ErrorModel(message: "الخادم غير متوفر حاليًا", statusCode: statusCode));
+    }
+    return Left(ErrorModel(message: elseMessage, statusCode: statusCode));
+  }
+
+  Either<ErrorModel, SuccessModel<LessonModel>> otherReturnedResponsesForLessons({required int statusCode, required String elseMessage}) {
     if (statusCode  >= 500) {
       return Left(ErrorModel(message: "الخادم غير متوفر حاليًا", statusCode: statusCode));
     }
@@ -166,7 +173,7 @@ class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
     return Right(successModel);
     }
 
-    return otherReturnedResponsesForUnitAndLessons(statusCode: 0, elseMessage: jsonData['message']);
+    return otherReturnedResponsesForUnitAnd(statusCode: 0, elseMessage: jsonData['message']);
 
     } on SocketException catch (_) {
       return const Left(ErrorModel(message: "تحقق من اتصالك بالإنترنت", statusCode: -1));
@@ -208,13 +215,61 @@ class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
     }
   }
 
+  @override
+  Future<Either<ErrorModel, SuccessModel<LessonModel>>> addEditLesson({required LessonModel lessonModel}) async {
+    try{
+      Response response = lessonModel.id == null ? await ApiConstance.postData(
+          url: ApiConstance.httpLinkCreateLesson, data: lessonModel.toJson(), accessToken: ""
+      ) :
+      await ApiConstance.putData(url: ApiConstance.httpLinkUpdateLesson, accessToken: "", data: lessonModel.toJson());
 
+      dynamic jsonData = jsonDecode(response.body);
+      if(response.statusCode >= 200 && response.statusCode < 300) {
+        LessonModel categoryModel = LessonModel.fromJson(json: jsonData['data']);
+        SuccessModel<LessonModel> successModel = SuccessModel<LessonModel>(statusCode: response.statusCode, message: jsonData['message'], data: categoryModel);
+        return Right(successModel);
+      }
 
-// @override
-  // Future<Either<ErrorModel, SuccessModel<CourseModel>>> addEditCourse({required File? image, required AddCourseModel keywordSearch}) {
-  //   if(){
-  //
-  //   }
-  // }
+      return otherReturnedResponsesForLessons(statusCode: 0, elseMessage: jsonData['message']);
+
+    } on SocketException catch (_) {
+      return const Left(ErrorModel(message: "تحقق من اتصالك بالإنترنت", statusCode: -1));
+    } on FormatException catch (_) {
+      return const Left(ErrorModel(message: "الرابط غير صحيح", statusCode: -1));
+    } catch (ex) {
+      return const Left(
+          ErrorModel(message: "الخادم غير متوفر حاليًا", statusCode: -1));
+    }
+  }
+
+  @override
+  Future<Either<ErrorModel, SuccessModel<String?>>> deleteLesson({required int lessonId}) async {
+    try{
+      Response response = await ApiConstance.deleteData(
+          url: ApiConstance.httpLinkDeleteLesson(lessonId: lessonId),
+          accessToken: ""
+      );
+
+      dynamic jsonData = jsonDecode(response.body);
+
+      if(response.statusCode >= 200 && response.statusCode < 300) {
+        return Right(SuccessModel(data: null, message: jsonData['message'], statusCode: response.statusCode));
+      }
+
+      if(response.statusCode >= 300) {
+        return Left(ErrorModel(message: jsonData['message'], statusCode: response.statusCode));
+      }
+
+      return otherReturnedResponsesForDelete(statusCode: 0, elseMessage: jsonData['message']);
+
+    } on SocketException catch (_) {
+      return const Left(ErrorModel(message: "تحقق من اتصالك بالإنترنت", statusCode: -1));
+    } on FormatException catch (_) {
+      return const Left(ErrorModel(message: "الرابط غير صحيح", statusCode: -1));
+    } catch (ex) {
+      return const Left(
+          ErrorModel(message: "الخادم غير متوفر حاليًا", statusCode: -1));
+    }
+  }
 
 }

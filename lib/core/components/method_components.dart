@@ -13,3 +13,17 @@ Future<Uint8List?> getFileBytes(html.File file) async {
 
   return completer.future;
 }
+
+
+
+String? urlValidation(String value) {
+  // Regular expression for URL validation
+  const String urlPattern = r'^(http|https):\/\/([A-Za-z0-9\.-]+)\.([A-Za-z]{2,6})([\/\w \.-]*)*\/?$';
+  final regExp = RegExp(urlPattern);
+
+  if (!regExp.hasMatch(value)) {
+    return 'عنوان url غير صالح';
+  }
+
+  return null;
+}

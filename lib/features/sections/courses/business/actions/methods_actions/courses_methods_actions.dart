@@ -107,11 +107,39 @@ class CoursesMethodsActions implements BaseCoursesMethodsActions {
     return updatedCourse;
   }
 
+  @override
+  CourseModel deleteUnitFromCourse(CourseModel course, UnitModel unit) {
+    List<UnitModel> updatedUnits = course.units?? [];
+    updatedUnits.removeWhere((element) => element.id == unit.id);
+
+    CourseModel updatedCourse = CourseModel(
+      id: course.id,
+      title: course.title,
+      description: course.description,
+      units: updatedUnits,
+      isLocked: course.isLocked,
+      createdAt: course.createdAt,
+      categoryName: course.categoryName,
+      goals: course.goals,
+      lessons: course.lessons,
+      allowDownload: course.allowDownload,
+      hasCertificate: course.hasCertificate,
+      question: course.question,
+      answer: course.answer,
+      categoryId: course.categoryId,
+      imageUrl: course.imageUrl,
+    );
+
+    return updatedCourse;
+  }
+
+
+
+
 
   @override
-  CourseModel concatCourseWithNewLesson(CourseModel course,
-      LessonsModel lesson) {
-    List<LessonsModel> updatedLessons = course.lessons ?? [];
+  CourseModel concatCourseWithNewLesson(CourseModel course, LessonModel lesson) {
+    List<LessonModel> updatedLessons = course.lessons ?? [];
     updatedLessons.add(lesson);
 
     CourseModel updatedCourse = CourseModel(
@@ -135,21 +163,56 @@ class CoursesMethodsActions implements BaseCoursesMethodsActions {
     return updatedCourse;
   }
 
+
+  int? _lessonUnitSelectedId;
+
   @override
-  CourseModel deleteUnitFromCourse(CourseModel course, UnitModel unit) {
-    List<UnitModel> updatedUnits = course.units?? [];
-    updatedUnits.removeWhere((element) => element.id == unit.id);
+  set lessonUnitSelectedId(int? value) => _lessonUnitSelectedId = value;
+
+  @override
+  int? get lessonUnitSelectedId => _lessonUnitSelectedId;
+
+  @override
+  CourseModel concatCourseWithUpdatedLesson(CourseModel course, LessonModel lesson) {
+    List<LessonModel> updatedLessons = course.lessons ?? [];
+    updatedLessons[updatedLessons.indexWhere((element) => element.id == lesson.id)] = lesson;
 
     CourseModel updatedCourse = CourseModel(
       id: course.id,
       title: course.title,
       description: course.description,
-      units: updatedUnits,
+      units: course.units,
       isLocked: course.isLocked,
       createdAt: course.createdAt,
       categoryName: course.categoryName,
       goals: course.goals,
-      lessons: course.lessons,
+      lessons: updatedLessons,
+      allowDownload: course.allowDownload,
+      hasCertificate: course.hasCertificate,
+      question: course.question,
+      answer: course.answer,
+      categoryId: course.categoryId,
+      imageUrl: course.imageUrl,
+    );
+
+    return updatedCourse;
+  }
+
+  @override
+  CourseModel deleteLessonFromCourse(CourseModel course, LessonModel lesson) {
+    List<LessonModel> updatedLessons = course.lessons?? [];
+    updatedLessons.removeWhere((element) => element.id == lesson.id);
+
+    CourseModel updatedCourse = CourseModel(
+      id: course.id,
+      title: course.title,
+      description: course.description,
+      units: course.units,
+      isLocked: course.isLocked,
+      createdAt: course.createdAt,
+      categoryName: course.categoryName,
+      goals: course.goals,
+      lessons: updatedLessons,
       allowDownload: course.allowDownload,
       hasCertificate: course.hasCertificate,
       question: course.question,
