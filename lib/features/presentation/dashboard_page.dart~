@@ -26,7 +26,7 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
 
     appCubit = AppCubit.get(context);
-    appCubit.changeDashboardSection(section: DashboardSectionsEnum.POSTS);
+    appCubit.changeDashboardSection(section: DashboardSectionsEnum.COURSES);
   }
 
   @override

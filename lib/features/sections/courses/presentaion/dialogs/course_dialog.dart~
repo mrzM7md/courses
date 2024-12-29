@@ -7,7 +7,7 @@ import 'package:course_dashboard/features/sections/categories/business/cubit_con
 import 'package:course_dashboard/features/sections/categories/data/models/category_model.dart';
 import 'package:course_dashboard/features/sections/courses/business/cubit_controller/courses_cubit.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/course_model.dart';
-import 'package:course_dashboard/features/sections/courses/presentaion/widgets/course_category_item_widget.dart';
+import 'package:course_dashboard/features/sections/courses/presentaion/widgets/category_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dropzone/flutter_dropzone.dart';
@@ -388,7 +388,7 @@ courseDialog(BuildContext mainContext, CourseModel? course) {
                         }
 
                         return Wrap(
-                          children: catsPaginated.data.map((category) => CourseCategoryItemWidget(category: category, onTap: (){
+                          children: catsPaginated.data.map((category) => CategoryItemWidget(category: category, onTap: (){
                             coursesCubit.changeCourseCategorySelected(categoryIdSelected: category.id!);
                           },)).toList(),
                         );

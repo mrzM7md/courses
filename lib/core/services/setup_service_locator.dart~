@@ -10,18 +10,18 @@ final sl = GetIt.instance;
 
 class SetupServiceLocator {
   void init() {
-    // ####################### Start Categories - Infos #######################  ///
+    /// ####################### Start Categories - Infos #######################  ///
     sl.registerLazySingleton(() => CategoriesEndpointsActions());
-    // ####################### End Categories - Infos #######################  ///
+    /// ####################### End Categories - Infos #######################  ///
 
-    // ####################### Start Courses - Base #######################  ///
+    /// ####################### Start Courses - Base #######################  ///
     sl.registerLazySingleton(() => CoursesMethodsActions());
     sl.registerLazySingleton(() => CoursesEndpointsActions(
       baseCoursesMethodsActions: sl<CoursesMethodsActions>()
     ),);
-    // ####################### End Courses - Base #######################  ///
+    /// ####################### End Courses - Base #######################  ///
 
     sl.registerLazySingleton(() => PostsMethodsActions());
-    sl.registerLazySingleton(() => PostsEndpointsActions(basePostsMethodsActions: sl<PostsMethodsActions>()));
+    sl.registerLazySingleton(() => PostsEndpointsActions(basePostsMethodsActions: ));
   }
 }

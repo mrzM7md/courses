@@ -16,6 +16,7 @@ class ApiConstance {
   static const String _httpServerLinkWithCourses = "$_httpServerLink/Course";
   static const String _httpServerLinkWithUnits = "$_httpServerLink/Units";
   static const String _httpServerLinkWithLessons = "$_httpServerLink/Lessons";
+  static const String _httpServerLinkWithPosts = "$_httpServerLink/Posts";
 
   static String getImageLink({required String imageUri}) => "$_hostName$imageUri";
 
@@ -50,6 +51,14 @@ class ApiConstance {
   static String httpLinkUpdateLesson = '$_httpServerLinkWithLessons/UpdateLessonAsync';
   static String httpLinkDeleteLesson({required int lessonId}) => '$_httpServerLinkWithLessons/RemoveLessonAsync?id=$lessonId';
   // ################ END LESSONS ENDPOINTS LINK ################
+
+  // ################ START POSTS ENDPOINTS LINK ################
+  static String httpLinkGetAllPosts({required int pageNumber, required int pageSize, required String keywordSearch}) => '$_httpServerLinkWithPosts/GetAllPostsAsync?PageNumber=$pageNumber&PageSize=$pageSize${
+      keywordSearch.trim().isEmpty ? '' : '&Search=$keywordSearch'}';
+  static String httpLinkCreatePost = '$_httpServerLinkWithPosts/CreatePostAsync';
+  static String httpLinkUpdatePost = '$_httpServerLinkWithPosts/UpdatePostAsync';
+  static String httpLinkDeletePost({required int postId}) => '$_httpServerLinkWithPosts/RemovePostAsync/$postId';
+  // ################ END POSTS ENDPOINTS LINK ################
 
   static Future<http.Response> getData({required String url ,required String accessToken}) async {
     var response = await http.get(
@@ -149,6 +158,7 @@ class ApiConstance {
     required String url,
     required Uint8List? fileBytes,
     required String accessToken,
+    required String fileFieldName,
     required Map<String, dynamic> data,
     required bool isPost,
   }) async {
@@ -159,7 +169,7 @@ class ApiConstance {
     if(fileBytes != null){
       if (fileBytes.isNotEmpty) {
       request.files.add(http.MultipartFile.fromBytes(
-        'ImageFile',
+        fileFieldName,
         fileBytes,
         filename: 'xsaupload.jpg',
       ));

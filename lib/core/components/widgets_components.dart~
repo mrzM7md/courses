@@ -10,7 +10,7 @@ import '../values/screen_responsive_sizes.dart';
 import '../values/style.dart';
 
 List<Widget> appButtonAndSearchTextBoxWidgets({required BuildContext context, required String title, required TextEditingController searchController, required String labelText, required String hintText, required VoidCallback? onAddTap, required VoidCallback? Function(dynamic value) onSearchTap}) => [
-  CupertinoButton(onPressed: onAddTap, child: const Text(title)),
+  CupertinoButton(onPressed: onAddTap, child: Text(title)),
   SizedBox(
     width: isDesktopSize(context: context)
         ? MediaQuery.sizeOf(context).width / 4

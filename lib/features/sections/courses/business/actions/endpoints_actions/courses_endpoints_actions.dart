@@ -55,6 +55,7 @@ class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
       // add
         await ApiConstance.postAndPutForm(
           fileBytes: image!,
+          fileFieldName: 'ImageFile',
           isPost: true,
           url: ApiConstance.httpLinkCreateCourse,
           data: addEditCourseModel.toJson(), accessToken: "",
@@ -62,6 +63,7 @@ class CoursesEndpointsActions implements BaseCoursesEndpointsActions {
       // edit
       await ApiConstance.postAndPutForm(
           fileBytes: image,
+          fileFieldName: 'ImageFile',
           isPost: false,
           url: ApiConstance.httpLinkUpdateCourse, data: addEditCourseModel.toJson(), accessToken: ""
       );

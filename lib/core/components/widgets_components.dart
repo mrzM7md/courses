@@ -24,7 +24,7 @@ List<Widget> appButtonAndSearchTextBoxWidgets({required BuildContext context, re
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          labelText: "البحث عن صنف",
+          labelText: labelText,
           hintText: "مثال 'الرياضيات'",
           suffixIcon: IconButton(
               onPressed:(){
