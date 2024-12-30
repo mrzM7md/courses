@@ -8,6 +8,7 @@ import 'package:course_dashboard/features/business/app_cubit.dart';
 import 'package:course_dashboard/features/sections/categories/presentaion/categories_section.dart';
 import 'package:course_dashboard/features/sections/courses/presentaion/courses_section.dart';
 import 'package:course_dashboard/features/sections/posts/presentaion/posts_section.dart';
+import 'package:course_dashboard/features/sections/surveys/presentaion/widgets/surveys_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'navigation_widgets/navigation_items_widget.dart';
@@ -26,7 +27,7 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
 
     appCubit = AppCubit.get(context);
-    appCubit.changeDashboardSection(section: DashboardSectionsEnum.POSTS);
+    appCubit.changeDashboardSection(section: DashboardSectionsEnum.SURVEYS);
   }
 
   @override
@@ -131,7 +132,11 @@ class _DashboardPageState extends State<DashboardPage> {
                                 return const PostsSection();
                               }
 
-                              return const PostsSection();
+                              if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.SURVEYS) {
+                                return const SurveysSection();
+                              }
+
+                              return const SurveysSection();
                             },
                           ),
                         ),

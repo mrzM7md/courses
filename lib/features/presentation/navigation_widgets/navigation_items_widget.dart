@@ -54,6 +54,11 @@ class _NavigationItemsWidgetState extends State<NavigationItemsWidget> {
           onTap: (){
             appCubit.changeDashboardSection(section: DashboardSectionsEnum.POSTS);
           },),
+        NavigationItemWidget(navigationImage: surveysImage, navigationName: "الاستبيانات",
+          bgColor: state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.SURVEYS ? Color(appColorGrey) : null,
+          onTap: (){
+            appCubit.changeDashboardSection(section: DashboardSectionsEnum.SURVEYS);
+          },),
       ],
     );
   },

@@ -3,4 +3,5 @@ enum DashboardSectionsEnum {
   COURSES,
   DASHBOARD,
   POSTS,
+  SURVEYS,
 }

@@ -1,0 +1,13 @@
+import 'package:course_dashboard/core/data/models/pagination_model.dart';
+import 'package:course_dashboard/core/data/models/success_model.dart';
+import 'package:fpdart/fpdart.dart';
+import '../../../../../../core/data/models/error_model.dart';
+import '../../../../../../core/values/pagination.dart';
+import '../../../data/models/survey_model.dart';
+import '../methods_actions/surveys_methods_actions.dart';
+
+abstract class BaseSurveysEndpointsActions extends SurveysMethodsActions {
+  Future<Either<ErrorModel, SuccessModel<SurveyModel>>> addEditSurveyAsync({required SurveyModel survey});
+  Future<Either<ErrorModel, SuccessModel<PaginationModel<SurveyModel>>>> getSurveysAsync({required String keywordSearch, int pageNumber = pageNumber, int pageSize = pageSize});
+  Future<Either<ErrorModel, SuccessModel<String?>>> deleteSurveyAsync({required int surveyId});
+}

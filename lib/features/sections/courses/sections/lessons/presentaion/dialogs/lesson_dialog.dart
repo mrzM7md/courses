@@ -10,7 +10,7 @@ import 'package:course_dashboard/features/sections/courses/business/cubit_contro
 import 'package:course_dashboard/features/sections/courses/data/models/course_model.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/lesson_model.dart';
 import 'package:course_dashboard/features/sections/courses/presentaion/dialogs/course_detail_dialog.dart';
-import 'package:course_dashboard/features/sections/courses/sections/lessons/presentaion/widgets/unit_item_widget.dart';
+import 'package:course_dashboard/features/sections/courses/sections/lessons/presentaion/widgets/lesson_unit_item_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -235,7 +235,7 @@ lessonDialog(
                     ConditionalBuilder(
                         condition: course.units != null,
                         builder: (context) => Wrap(
-                            children: course.units!.map((unit) => UnitItemWidget(unit: unit, onTap: (){
+                            children: course.units!.map((unit) => LessonUnitItemWidget(unit: unit, onTap: (){
                               courseCubit.changeLessonUnitSelected(unitIdSelected: unit.id!);
                             },)).toList()),
                         fallback: (context) => Container(),
