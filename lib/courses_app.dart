@@ -13,7 +13,7 @@ class CoursesApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: router,
       theme: ThemeData(
-          fontFamily: "Amiri",
+          fontFamily: "Cairo",
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
           useMaterial3: true,
           scaffoldBackgroundColor: Colors.white,
