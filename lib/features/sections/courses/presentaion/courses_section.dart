@@ -43,7 +43,6 @@ class _CoursesSectionState extends State<CoursesSection> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        color: Color(appColorLightYellow),
         padding: EdgeInsetsDirectional.symmetric(
             vertical: smallVerticalPadding(context: context),
             horizontal:
@@ -127,21 +126,21 @@ class _CoursesSectionState extends State<CoursesSection> {
                               dataRowColor: WidgetStateProperty.all(
                                   Colors.white),
                               columns: <DataColumn>[
-                                appDataColumnWidget(context: context, title: "خيارات"),
-                                appDataColumnWidget(context: context, title: "        "),
-                                appDataColumnWidget(context: context, title: "المعرف"),
-                                appDataColumnWidget(context: context, title: "صورة العنوان"),
-                                appDataColumnWidget(context: context, title: "العنوان"),
-                                appDataColumnWidget(context: context, title: "الحالات"),
+                                appDataColumnWidget(context: context, title: "خيارات", textColor: appTableHeaderColorText),
+                                appDataColumnWidget(context: context, title: "        ", textColor: appTableHeaderColorText),
+                                appDataColumnWidget(context: context, title: "المعرف", textColor: appTableHeaderColorText),
+                                appDataColumnWidget(context: context, title: "صورة العنوان", textColor: appTableHeaderColorText),
+                                appDataColumnWidget(context: context, title: "العنوان", textColor: appTableHeaderColorText),
+                                appDataColumnWidget(context: context, title: "الحالات", textColor: appTableHeaderColorText),
                               ],
                               rows: List<DataRow>.generate(
                                 data.data.length,
                                     (index) => DataRow(
-                                  color: const WidgetStatePropertyAll(Colors.white),
+                                      color: index % 2 == 1 ? breakDataTableColor : const WidgetStatePropertyAll(Colors.white) ,
                                   // color: WidgetStatePropertyAll(Colors.red),
                               cells: <DataCell>[
                                 DataCell(
-                                  Row(
+                                    Row(
                                     children: [
                                       BlocListener<CoursesCubit, CoursesState>(
                                         listenWhen: (previous, current) => current is AddEditDeleteCourseState && current.isLoaded && current.courseId == data.data[index].id && current.operation == OperationsEnum.EDIT,

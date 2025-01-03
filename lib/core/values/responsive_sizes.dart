@@ -11,7 +11,7 @@ double smallFontSize({required BuildContext context}) =>
 
 double mediumFontSize({required BuildContext context}) =>
     isMobileSize(context: context) ? 8.sp :
-    isTabletSize(context: context) ? 12.sp : 14.sp;
+    isTabletSize(context: context) ? 10.sp : 12.sp;
 
 double largeFontSize({required BuildContext context}) =>
     isMobileSize(context: context) ? 12.sp :
@@ -34,5 +34,5 @@ double largeVerticalHorizontalPadding({required BuildContext context}) => isMobi
 //################### START NAVIGATION #################//
 double navigationWidth({required BuildContext context}) =>
     isMobileSize(context: context) ? MediaQuery.sizeOf(context).width / 1.5 :
-    isTabletSize(context: context) ? MediaQuery.sizeOf(context).width / 4 : MediaQuery.sizeOf(context).width / 6;
+    isTabletSize(context: context) ? MediaQuery.sizeOf(context).width / 4 : MediaQuery.sizeOf(context).width / 7.5;
 //################### END NAVIGATION #################//

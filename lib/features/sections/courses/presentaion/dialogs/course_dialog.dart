@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:course_dashboard/core/data/models/pagination_model.dart';
 import 'package:course_dashboard/core/values/colors.dart';
 import 'package:course_dashboard/features/sections/categories/business/cubit_controller/categories_cubit.dart';
@@ -201,17 +202,26 @@ courseDialog(BuildContext mainContext, CourseModel? course) {
                     const Text("صورة الكورس", style: TextStyle(fontWeight: FontWeight.bold),),
                     const SizedBox(height: 10,),
                     const SizedBox(height: 20),
-                    getAppButton(color: Color(appColorGrey), textColor: Colors.black, text: "اختر صورة", onClick:  pickImage),
+                  appButton(
+                      context: mainContext,
+                      icon: Icons.image,
+                      title: "اختر صورة",
+                      onAddTap: pickImage
+                  ),
                     const SizedBox(height: 10,),
                     BlocBuilder<CoursesCubit, CoursesState>(
                       buildWhen: (previous, current) => current is ChangeCourseImageSelectedState,
                       builder: (context, state) {
                         if(state is ChangeCourseImageSelectedState){
-                          return Image.memory(
-                            imageUrl!,
-                            height: 200,
-                            width: 200,
-                            fit: BoxFit.cover,
+                          return ConditionalBuilder(
+                              condition: imageUrl == null,
+                              builder: (context) => Container(),
+                              fallback: (context) => Image.memory(
+                                imageUrl!,
+                                height: 200,
+                                width: 200,
+                                fit: BoxFit.cover,
+                              ),
                           );
                         }
 
@@ -407,28 +417,33 @@ courseDialog(BuildContext mainContext, CourseModel? course) {
                             if(state is AddEditDeleteCourseState && ! state.isLoaded){
                               return const CircularProgressIndicator();
                             }
-                            return getAppButton(color: Colors.transparent, textColor: Colors.black,
-                            text: course == null ? "إضافة" : "حفظ التغييرات",
-                            onClick: (){
-                              if(formKey.currentState!.validate()){
-                                if(course == null){
-                                  if(imageUrl == null){
-                                    getToast(message: "يجب أن تدخل صورة", isSuccess: false);
-                                    return;
-                                  }
-                                  if(contentController.document.isEmpty()){
-                                    getToast(message: "يجب أن تدخل وصف", isSuccess: false);
-                                    return;
-                                  }
-                                  if(courseCubit.baseCoursesEndpointsActions.baseCoursesMethodsActions.courseCategorySelectedId == null){
-                                    getToast(message: "يجب أن تختار صنف", isSuccess: false);
-                                    return;
-                                  }
-                                }
-                                submit();
-                              }
-                            }
-                        );
+                            return
+                              appButton(
+                                  context: mainContext,
+                                  icon: course == null ? Icons.add : Icons.edit,
+                                  title: course == null ? "إضافة" : "حفظ التغييرات",
+                                  onAddTap: () {
+                                    if (formKey.currentState!.validate()) {
+                                      if(formKey.currentState!.validate()){
+                                        if(course == null){
+                                          if(imageUrl == null){
+                                            getToast(message: "يجب أن تدخل صورة", isSuccess: false);
+                                            return;
+                                          }
+                                          if(contentController.document.isEmpty()){
+                                            getToast(message: "يجب أن تدخل وصف", isSuccess: false);
+                                            return;
+                                          }
+                                          if(courseCubit.baseCoursesEndpointsActions.baseCoursesMethodsActions.courseCategorySelectedId == null){
+                                            getToast(message: "يجب أن تختار صنف", isSuccess: false);
+                                            return;
+                                          }
+                                        }
+                                        submit();
+                                      }
+                                    }
+                                  });
+
                             },
                           listener: (context, state) {
                             if(state is AddEditDeleteCourseState && state.isLoaded) {

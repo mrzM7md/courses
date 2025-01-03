@@ -310,20 +310,20 @@ lessonDialog(
                                 !state.isLoaded) {
                               return const CircularProgressIndicator();
                             }
-                            return getAppButton(
-                                color: Colors.transparent,
-                                textColor: Colors.black,
-                                text: lesson == null ? "إضافة" : "حفظ التغييرات",
-                                onClick: () {
+                            return appButton(
+                                context: mainContext,
+                                icon: lesson == null ? Icons.add : Icons.edit,
+                                title: lesson == null ? "إضافة" : "حفظ التغييرات",
+                                onAddTap: () {
                                   if(formKey.currentState!.validate()){
-                                      if(scriptController.document.isEmpty()){
-                                        getToast(message: "يجب أن تدخل وصف", isSuccess: false);
-                                        return;
-                                      }
-                                      if(courseCubit.baseCoursesEndpointsActions.baseCoursesMethodsActions.lessonUnitSelectedId == null){
-                                        getToast(message: "يجب أن تختار صنف", isSuccess: false);
-                                        return;
-                                      }
+                                    if(scriptController.document.isEmpty()){
+                                      getToast(message: "يجب أن تدخل وصف", isSuccess: false);
+                                      return;
+                                    }
+                                    if(courseCubit.baseCoursesEndpointsActions.baseCoursesMethodsActions.lessonUnitSelectedId == null){
+                                      getToast(message: "يجب أن تختار صنف", isSuccess: false);
+                                      return;
+                                    }
 
                                     submit();
                                   }

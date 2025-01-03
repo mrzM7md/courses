@@ -82,7 +82,7 @@ class _NavigationItemsWidgetState extends State<NavigationItemsWidget> {
                 navigationName: "الاستبيانات",
                 bgColor: state is ChangeDashboardSectionsState &&
                         state.section == DashboardSectionsEnum.SURVEYS
-                    ? selectedColor
+                    ? Color(appColorGrey)
                     : null,
                 onTap: () {
                   appCubit.changeDashboardSection(

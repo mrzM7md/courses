@@ -250,9 +250,6 @@ surveyDialog(
                                     operations: OperationsEnum.FAIL,
                                     errorMessage: state.message);
                               }
-                              getToast(
-                                  message: state.message,
-                                  isSuccess: state.isSuccess);
                             }
                           },
                           builder: (context, state) {
@@ -260,17 +257,12 @@ surveyDialog(
                                 !state.isLoaded) {
                               return const CircularProgressIndicator();
                             }
-                            return getAppButton(
-                                color: Colors.transparent,
-                                textColor: Colors.black,
-                                text: survey == null ? "إضافة" : "حفظ التغييرات",
-                                onClick: () {
+                            return appButton(
+                                context: mainContext,
+                                icon: survey == null ? Icons.add : Icons.edit,
+                                title: survey == null ? "إضافة" : "حفظ التغييرات",
+                                onAddTap: () {
                                   if(formKey.currentState!.validate()){
-                                    // if(surveyCubit.baseSurveysEndpointsActions.baseSurveysMethodsActions.surveyUnitSelectedId == null){
-                                    //   getToast(message: "يجب أن تختار صنف", isSuccess: false);
-                                    //   return;
-                                    // }
-
                                     submit();
                                   }
                                 });

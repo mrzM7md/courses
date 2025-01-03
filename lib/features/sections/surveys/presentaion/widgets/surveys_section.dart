@@ -40,7 +40,6 @@ class _SurveysSectionState extends State<SurveysSection> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Container(
-          color: Color(appColorLightYellow),
           padding: EdgeInsetsDirectional.symmetric(
               vertical: smallVerticalPadding(context: context),
               horizontal: smallHorizontalPadding(context: context)),
@@ -121,25 +120,24 @@ class _SurveysSectionState extends State<SurveysSection> {
                               dataRowColor: WidgetStateProperty.all(Colors.white),
                               columns: <DataColumn>[
                                 appDataColumnWidget(
-                                    context: context, title: "خيارات"),
+                                    context: context, title: "خيارات", textColor: appTableHeaderColorText),
                                 appDataColumnWidget(
                                     context: context, title: "        "),
                                 appDataColumnWidget(
-                                    context: context, title: "المعرف"),
+                                    context: context, title: "المعرف", textColor: appTableHeaderColorText),
                                 appDataColumnWidget(
-                                    context: context, title: "الاسم"),
+                                    context: context, title: "الاسم", textColor: appTableHeaderColorText),
                                 appDataColumnWidget(
-                                    context: context, title: "الوحدة"),
+                                    context: context, title: "الوحدة", textColor: appTableHeaderColorText),
                                 appDataColumnWidget(
-                                    context: context, title: "الكورس"),
+                                    context: context, title: "الكورس", textColor: appTableHeaderColorText),
                                 appDataColumnWidget(
-                                    context: context, title: "الترتيب"),
+                                    context: context, title: "الترتيب", textColor: appTableHeaderColorText),
                               ],
                               rows: List<DataRow>.generate(
                                 data.data.length,
                                 (index) => DataRow(
-                                  color: const WidgetStatePropertyAll(
-                                    Colors.white),
+                                  color: index % 2 == 1 ? breakDataTableColor : const WidgetStatePropertyAll(Colors.white) ,
                                 // color: WidgetStatePropertyAll(Colors.red),
                                 cells: <DataCell>[
                                   DataCell(

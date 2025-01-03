@@ -40,7 +40,6 @@ class _CategoriesSectionState extends State<CategoriesSection> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
         child: Container(
-          color: Color(appColorLightYellow),
           padding: EdgeInsetsDirectional.symmetric(
               vertical: smallVerticalPadding(context: context),
               horizontal: smallHorizontalPadding(context: context)),
@@ -115,25 +114,24 @@ class _CategoriesSectionState extends State<CategoriesSection> {
                                   context: context)),
 
                           child: DataTable(
-                              // headingRowColor: WidgetStatePropertyAll(Colors.red),
+                              headingRowColor: appTableHeaderBackgroundColor,
                               dividerThickness: 0,
-                              columnSpacing: 10,
+                              // columnSpacing: 10,
                               dataRowColor: WidgetStateProperty.all(Colors.white),
                               columns: <DataColumn>[
                                 appDataColumnWidget(
-                                    context: context, title: "خيارات"),
+                                    context: context, title: "خيارات", textColor: appTableHeaderColorText),
                                 appDataColumnWidget(
                                     context: context, title: "        "),
                                 appDataColumnWidget(
-                                    context: context, title: "المعرف"),
+                                    context: context, title: "المعرف", textColor: appTableHeaderColorText),
                                 appDataColumnWidget(
-                                    context: context, title: "الاسم"),
+                                    context: context, title: "الاسم", textColor: appTableHeaderColorText),
                               ],
                               rows: List<DataRow>.generate(
                                 data.data.length,
                                 (index) => DataRow(
-                                  color: const WidgetStatePropertyAll(
-                                    Colors.white),
+                                  color: index % 2 == 1 ? breakDataTableColor : const WidgetStatePropertyAll(Colors.white) ,
                                 // color: WidgetStatePropertyAll(Colors.red),
                                 cells: <DataCell>[
                                   DataCell(

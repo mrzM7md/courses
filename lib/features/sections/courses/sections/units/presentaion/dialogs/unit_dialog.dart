@@ -236,11 +236,11 @@ unitDialog(
                                 !state.isLoaded) {
                               return const CircularProgressIndicator();
                             }
-                            return getAppButton(
-                                color: Colors.transparent,
-                                textColor: Colors.black,
-                                text: unit == null ? "إضافة" : "حفظ التغييرات",
-                                onClick: () {
+                            return appButton(
+                              context: mainContext,
+                                icon: unit == null ?  Icons.add : Icons.edit,
+                                title: unit == null ? "إضافة" : "حفظ التغييرات",
+                                onAddTap: () {
                                   if (formKey.currentState!.validate()) {
                                     submit();
                                   }

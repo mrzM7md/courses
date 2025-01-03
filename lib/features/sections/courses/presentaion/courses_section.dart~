@@ -7,6 +7,7 @@ import 'package:course_dashboard/core/values/images.dart';
 import 'package:course_dashboard/features/business/app_cubit.dart';
 import 'package:course_dashboard/features/sections/courses/business/cubit_controller/courses_cubit.dart';
 import 'package:course_dashboard/features/sections/courses/data/models/course_model.dart';
+import 'package:course_dashboard/features/sections/courses/presentaion/dialogs/course_detail_dialog.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,7 +43,6 @@ class _CoursesSectionState extends State<CoursesSection> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        color: Color(appColorLightYellow),
         padding: EdgeInsetsDirectional.symmetric(
             vertical: smallVerticalPadding(context: context),
             horizontal:
@@ -126,12 +126,12 @@ class _CoursesSectionState extends State<CoursesSection> {
                               dataRowColor: WidgetStateProperty.all(
                                   Colors.white),
                               columns: <DataColumn>[
-                                appDataColumnWidget(context: context, title: "خيارات"),
-                                appDataColumnWidget(context: context, title: "        "),
-                                appDataColumnWidget(context: context, title: "المعرف"),
-                                appDataColumnWidget(context: context, title: "صورة العنوان"),
-                                appDataColumnWidget(context: context, title: "العنوان"),
-                                appDataColumnWidget(context: context, title: "الحالات"),
+                                appDataColumnWidget(context: context, title: "خيارات", textColor: appTableHeaderColorText),
+                                appDataColumnWidget(context: context, title: "        ", textColor: appTableHeaderColorText),
+                                appDataColumnWidget(context: context, title: "المعرف", textColor: appTableHeaderColorText),
+                                appDataColumnWidget(context: context, title: "صورة العنوان", textColor: appTableHeaderColorText),
+                                appDataColumnWidget(context: context, title: "العنوان", textColor: appTableHeaderColorText),
+                                appDataColumnWidget(context: context, title: "الحالات", textColor: appTableHeaderColorText),
                               ],
                               rows: List<DataRow>.generate(
                                 data.data.length,
@@ -140,7 +140,7 @@ class _CoursesSectionState extends State<CoursesSection> {
                                   // color: WidgetStatePropertyAll(Colors.red),
                               cells: <DataCell>[
                                 DataCell(
-                                  Row(
+                                    Row(
                                     children: [
                                       BlocListener<CoursesCubit, CoursesState>(
                                         listenWhen: (previous, current) => current is AddEditDeleteCourseState && current.isLoaded && current.courseId == data.data[index].id && current.operation == OperationsEnum.EDIT,
@@ -180,7 +180,9 @@ class _CoursesSectionState extends State<CoursesSection> {
                                     }, icon: const Icon(CupertinoIcons.delete),);
                                   },
                                 ),
-                                      IconButton(onPressed: (){}, icon: const Icon(CupertinoIcons.eye),),
+                                      IconButton(onPressed: (){
+                                        courseDetailDialog(context, data.data[index]);
+                                      }, icon: const Icon(CupertinoIcons.eye),),
                                     ],
                                   ),
                                 ),

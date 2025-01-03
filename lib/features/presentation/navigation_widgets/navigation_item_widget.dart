@@ -16,13 +16,16 @@ class NavigationItemWidget extends StatelessWidget {
       color: bgColor,
       child: ListTile(
         onTap: () => onTap(),
-        // hoverColor: Color(appColorGrey),
+        hoverColor: Colors.black45,
+        splashColor: Colors.black54,
         // focusColor: Colors.black,
-        leading: Image.asset(navigationImage ,width: mediumFontSize(context: context),),
+        textColor: Colors.white,
+        // leading: Image.asset(navigationImage ,width: mediumFontSize(context: context),),
+        // selectedColor: Colors.black,
         title: Text(navigationName,
           style: TextStyle(
               fontSize: mediumFontSize(context: context),
-              color: Colors.black
+              // color: Colors.black
           ),
         ),
       ),

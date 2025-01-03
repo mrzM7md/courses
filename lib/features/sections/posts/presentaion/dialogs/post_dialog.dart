@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:course_dashboard/core/values/colors.dart';
 import 'package:course_dashboard/features/sections/posts/business/cubit_controller/posts_state.dart';
 import 'package:course_dashboard/features/sections/posts/data/models/add_edit_post_model.dart';
@@ -176,11 +177,15 @@ postDialog(BuildContext mainContext, PostModel? post) {
                       buildWhen: (previous, current) => current is ChangePostImageSelectedState,
                       builder: (context, state) {
                         if(state is ChangePostImageSelectedState){
-                          return Image.memory(
-                            imageUrl!,
-                            height: 200,
-                            width: 200,
-                            fit: BoxFit.cover,
+                          return ConditionalBuilder(
+                            condition: imageUrl == null,
+                            builder: (context) => Container(),
+                            fallback: (context) => Image.memory(
+                              imageUrl!,
+                              height: 200,
+                              width: 200,
+                              fit: BoxFit.cover,
+                            ),
                           );
                         }
 

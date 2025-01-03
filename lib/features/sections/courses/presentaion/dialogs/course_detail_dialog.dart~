@@ -128,6 +128,15 @@ courseDetailDialog(BuildContext mainContext, CourseModel course) {
                     const Divider(),
                     Text("الوحدات", style: TextStyle(fontSize:mediumFontSize(context: context) )),
 
+                  appButton(
+                      context: mainContext,
+                      icon: Icons.add,
+                      title: "إضافة وحدة جديدة",
+                      onAddTap: () {
+                        Navigator.of(context).pop();
+                        unitDialog(mainContext: mainContext, unit: null, course: course);
+                      }),
+
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: DataTable(
@@ -175,17 +184,6 @@ courseDetailDialog(BuildContext mainContext, CourseModel course) {
                         ),
                       ),
                     ),
-
-                    const SizedBox(height: 5,),
-
-                    appButton(
-                        context: mainContext,
-                        icon: Icons.add,
-                        title: "إضافة وحدة جديدة",
-                        onAddTap: () {
-                          Navigator.of(context).pop();
-                          unitDialog(mainContext: mainContext, unit: null, course: course);
-                        }),
 
                     const Divider(),
 

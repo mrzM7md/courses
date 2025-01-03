@@ -38,7 +38,7 @@ surveyDialog(
         }
 
         if(unitController.text == "0" || unitController.text == ''){
-          orderController.text = "1";
+          unitController.text = "1";
         }
 
         if(survey !=  null){
@@ -260,17 +260,12 @@ surveyDialog(
                                 !state.isLoaded) {
                               return const CircularProgressIndicator();
                             }
-                            return getAppButton(
-                                color: Colors.transparent,
-                                textColor: Colors.black,
-                                text: survey == null ? "إضافة" : "حفظ التغييرات",
-                                onClick: () {
+                            return appButton(
+                                context: mainContext,
+                                icon: survey == null ? Icons.add : Icons.edit,
+                                title: survey == null ? "إضافة" : "حفظ التغييرات",
+                                onAddTap: () {
                                   if(formKey.currentState!.validate()){
-                                    // if(surveyCubit.baseSurveysEndpointsActions.baseSurveysMethodsActions.surveyUnitSelectedId == null){
-                                    //   getToast(message: "يجب أن تختار صنف", isSuccess: false);
-                                    //   return;
-                                    // }
-
                                     submit();
                                   }
                                 });
