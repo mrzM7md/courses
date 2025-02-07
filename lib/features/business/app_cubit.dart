@@ -38,6 +38,10 @@ class AppCubit extends Cubit<AppState> {
           emit(RunOperationsState(message: errorMessage, operation: operations));
           break;
         }
+        default:{
+          emit(RunOperationsState(message: errorMessage, operation: operations));
+          break;
+        }
     }
   }
 

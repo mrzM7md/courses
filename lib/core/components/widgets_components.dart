@@ -66,15 +66,17 @@ List<Widget> appButtonAndSearchTextBoxWidgets(
 Widget appSuccessFailWidget(
         {required BuildContext context,
         required bool isSuccess,
-        required String message}) =>
+        required String message,
+        required VoidCallback? onClose
+        }) =>
     Container(
       width: double.infinity,
       padding: EdgeInsets.all(15.h),
-      color: isSuccess ? Colors.green : Colors.red,
+      color: isSuccess ? Colors.green : Colors.redAccent,
       child: Row(
         children: [
           IconButton(
-            onPressed: () {},
+            onPressed: onClose,
             icon: const Icon(
               Icons.close,
               color: Colors.white,

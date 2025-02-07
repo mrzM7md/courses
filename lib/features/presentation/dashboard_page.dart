@@ -28,7 +28,7 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
 
     appCubit = AppCubit.get(context);
-    appCubit.changeDashboardSection(section: DashboardSectionsEnum.SURVEYS);
+    appCubit.changeDashboardSection(section: DashboardSectionsEnum.CATEGORIES);
   }
 
   @override
@@ -98,12 +98,13 @@ class _DashboardPageState extends State<DashboardPage> {
                           buildWhen: (previous,
                               current) => current is RunOperationsState,
                           builder: (context, state) {
-                            if (state is! RunOperationsState) {
+                            if (state is! RunOperationsState || state.operation == OperationsEnum.CLOSED) {
                               return Container();
                             }
                             return appSuccessFailWidget(context: context,
                                 isSuccess: state.operation ==
                                     OperationsEnum.SUCCESS,
+                                onClose: () => appCubit.runAnOption(operations: OperationsEnum.CLOSED, successMessage: "", errorMessage: ""),
                                 message: state.message);
                           },
                         ),

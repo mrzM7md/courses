@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:course_dashboard/core/components/widgets_components.dart';
 import 'package:course_dashboard/core/enums/dashboard_sections_enum.dart';
 import 'package:course_dashboard/core/enums/operations_enum.dart';
+import 'package:course_dashboard/core/values/colors.dart';
 import 'package:course_dashboard/core/values/responsive_sizes.dart';
 import 'package:course_dashboard/core/values/screen_responsive_sizes.dart';
 import 'package:course_dashboard/features/business/app_cubit.dart';
@@ -27,7 +28,7 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
 
     appCubit = AppCubit.get(context);
-    appCubit.changeDashboardSection(section: DashboardSectionsEnum.SURVEYS);
+    appCubit.changeDashboardSection(section: DashboardSectionsEnum.CATEGORIES);
   }
 
   @override
@@ -97,47 +98,51 @@ class _DashboardPageState extends State<DashboardPage> {
                           buildWhen: (previous,
                               current) => current is RunOperationsState,
                           builder: (context, state) {
-                            if (state is! RunOperationsState) {
+                            if (state is! RunOperationsState || (state is RunOperationsState && state.operation == OperationsEnum.CLOSED)) {
                               return Container();
                             }
                             return appSuccessFailWidget(context: context,
                                 isSuccess: state.operation ==
                                     OperationsEnum.SUCCESS,
+                                onClose: () => appCubit.runAnOption(operations: OperationsEnum.CLOSED, successMessage: "", errorMessage: ""),
                                 message: state.message);
                           },
                         ),
                         Expanded(
-                          child: BlocBuilder<AppCubit, AppState>(
-                            buildWhen: (previous, current) => current is ChangeDashboardSectionsState || current is AppInitial,
-                            builder: (context, state) {
-                              if(state is AppInitial){
-                                return Container(
-                                  alignment: Alignment.center,
-                                  child: const SizedBox(
-                                      width: 50,
-                                      height: 50,
-                                      child: CircularProgressIndicator()),
-                                );
-                              }
+                          child: Container(
+                            color: Color(appColorLightYellow),
+                            child: BlocBuilder<AppCubit, AppState>(
+                              buildWhen: (previous, current) => current is ChangeDashboardSectionsState || current is AppInitial,
+                              builder: (context, state) {
+                                if(state is AppInitial){
+                                  return Container(
+                                    alignment: Alignment.center,
+                                    child: const SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: CircularProgressIndicator()),
+                                  );
+                                }
 
-                              if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.COURSES) {
-                                return const CoursesSection();
-                              }
+                                if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.COURSES) {
+                                  return const CoursesSection();
+                                }
 
-                              if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.CATEGORIES) {
-                                return const CategoriesSection();
-                              }
+                                if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.CATEGORIES) {
+                                  return const CategoriesSection();
+                                }
 
-                              if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.POSTS) {
-                                return const PostsSection();
-                              }
+                                if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.POSTS) {
+                                  return const PostsSection();
+                                }
 
-                              if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.SURVEYS) {
+                                if(state is ChangeDashboardSectionsState && state.section == DashboardSectionsEnum.SURVEYS) {
+                                  return const SurveysSection();
+                                }
+
                                 return const SurveysSection();
-                              }
-
-                              return const SurveysSection();
-                            },
+                              },
+                            ),
                           ),
                         ),
                       ],

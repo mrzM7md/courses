@@ -7,8 +7,8 @@ import 'package:path/path.dart';
 
 class ApiConstance {
   // base link
-  // static const String httpServerLink = "http://127.0.0.1:8000/api/v1";
-  static const String _hostName = "https://localhost:7272";
+  static const String _hostName = "http://courses.runasp.net";
+  // static const String _hostName = "https://localhost:7272";
   static const String _httpServerLink = "$_hostName/api";
   static const String _httpServerLinkWithCategories =
       "$_httpServerLink/Categories";
